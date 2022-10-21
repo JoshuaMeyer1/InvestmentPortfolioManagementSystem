@@ -30,7 +30,7 @@
         var tablesDict = [];
 
         function updateTable() {
-            localStorage.setItem("stockTable", tablesDict);
+            localStorage.setItem("stockTable", JSON.stringify(tablesDict));
             var listTable = document.getElementById("stockTable");
             listTable.innerHTML = '';
             for (var i = 0; i < tablesDict.length; i++) {
@@ -60,12 +60,15 @@
             updateTable();
         }
 
-        
+        function initialPopulateTable() {
+            tablesDict = JSON.parse(localStorage.getItem("stockTable"));
+            updateTable();
+        }        
 
     </script>
 </head>
 
-<body>
+<body onload="initialPopulateTable()">
     <div class="navigation">
         <ul>
             <li>
@@ -124,6 +127,9 @@
             </div>
         </div>
     </div>
+
+
+    
 
     <div class="contentContainer">
         <div id="stockPortfolio">
