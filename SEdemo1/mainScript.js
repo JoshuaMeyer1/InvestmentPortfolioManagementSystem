@@ -24,24 +24,28 @@ function validateDBInformation(name, password, oldPassword) {
         if (name != "") {
             updateUsername(name);
         }
-        
+
         if (password != "") {
             updatePassword(password);
         }
         return true;
-    } else {
-        return false;
-    }
+     }
+     return false;
+    
 }
 
 // function to update the database username
 function updateUsername(name) {
     console.log(name);
+    return true;
 }
 
 // function to update the database password
 function updatePassword(password) {
     console.log(password);
+    return true;
 }
 
-module.exports = validateDBInformation
+module.exports.validateDBInformation = validateDBInformation;
+module.exports.updateUsername = updateUsername;
+module.exports.updatePassword = updatePassword;
