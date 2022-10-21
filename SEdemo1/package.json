@@ -1,0 +1,23 @@
+{
+  "name": "investmentportfoliomanagementsystem",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoshuaMeyer1/InvestmentPortfolioManagementSystem.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoshuaMeyer1/InvestmentPortfolioManagementSystem/issues"
+  },
+  "homepage": "https://github.com/JoshuaMeyer1/InvestmentPortfolioManagementSystem#readme",
+  "description": "",
+  "devDependencies": {
+    "jest": "^29.2.1"
+  }
+}

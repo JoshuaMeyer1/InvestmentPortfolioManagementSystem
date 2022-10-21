@@ -43,3 +43,5 @@ function updateUsername(name) {
 function updatePassword(password) {
     console.log(password);
 }
+
+module.exports = validateDBInformation
