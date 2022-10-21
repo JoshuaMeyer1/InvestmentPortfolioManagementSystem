@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Profile Settings</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css" integrity="undefined" crossorigin="anonymous">
+
+    <!-- boostrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="mainScript.js"></script>
+    <style>
+        .form {
+            padding-left: 2rem;
+        }
+
+        .contentContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 10rem;
+        }
+    </style>
+</head>
+
+<body>
+
+	<!-- navigation bar -->
+    <div class="navigation">
+        <ul>
+            <li>
+                <a href="#" style="padding-left: 0rem;">
+                    <img src="samplelogo.png" width="200" height="200" alt="Logo">
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="linkText">User Profile</span>
+                </a>
+            </li>
+            <li>
+                <a href="portfolio.html" style="color:#a8a8a8">
+                    <span class="linkText">Portfolio</span>
+                </a>
+            </li>
+            <li>
+                <a href="portfolioAnalysis.html" style="color:#a8a8a8">
+                    <span class="linkText">Portfolio Analysis</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    
+	<!-- page header -->
+    <div class="header">
+        <h2 style = "font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,garamond,serif;">
+            Profile Settings
+        </h2>
+    </div>
+    
+    <!--  database login form -->
+    <div class="contentContainer">
+        <h3 style = "font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,garamond,serif;">Profile Settings</h3>
+        <div class="containerItem">
+        
+            <!--  database name text field (only accepts "s") -->
+            <form class="form" style="padding-top: 0.5rem;">
+                <input type="text" class="form__field form-rounded" id="dbName" placeholder="New Username"/>
+            </form>
+            
+            <!--  database password text field (only accepts "s") -->
+            <form class="form" style="padding-top: 0.5rem;">
+                <input type="password" class="form__field form-rounded" id="dbPassword" placeholder="New Password"/>
+            </form>
+
+            <form class="form" style="padding-top: 0.5rem;">
+                <input type="password" class="form__field form-rounded" id="oldPassword" placeholder="Old Password"/>
+            </form>
+            
+            <div class="text-center">
+                <form class="form" style="padding-top: 1rem;">
+                    <button type="button" class="btn btn-primary" onclick="settingsButtonHandler()">ENTER</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
