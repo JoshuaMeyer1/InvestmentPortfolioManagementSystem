@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
@@ -34,7 +34,7 @@
             var listTable = document.getElementById("stockTable");
             listTable.innerHTML = '';
             for (var i = 0; i < tablesDict.length; i++) {
-                listTable.innerHTML += '<tr><th scope="row">' + String(i) + '</th><td>' + String(tablesDict[i]["stockName"]) + '</td><td>' + String(tablesDict[i]["stockExchange"]) + '</td><td>' + String(tablesDict[i]["buyDate"]) + '</td><td><button onclick="removeStock(' + i + ')" style="border-radius: 0px" class="btn btn-outline-secondary"type="button">Remove</button></td></tr>';
+                listTable.innerHTML += '<tr><th scope="row">' + String(i) + '</th><td>' + String(tablesDict[i]["stockName"]) + '</td><td>' + String(tablesDict[i]["stockExchange"]) + '</td><td>' + String(tablesDict[i]["buyDate"]) + '</td><td><button onclick="removeStock(' + i + ')" style="border-radius: 0" class="btn btn-outline-secondary" type="button">Remove</button></td></tr>';
             }
         }
 
@@ -55,7 +55,6 @@
                 'buyDate': buyDate
             });
 
-
             console.log(tablesDict);
             updateTable();
         }
@@ -72,7 +71,7 @@
     <div class="navigation">
         <ul>
             <li>
-                <a href="#" style="padding-left: 0rem">
+                <a href="#" style="padding-left: 0">
                     <img src="samplelogo.png" width="200" height="200" alt="Logo" />
                 </a>
             </li>
@@ -120,7 +119,7 @@
                 </div>
                 <input type="text" class="form-control" id="buyDate" placeholder="MM/DD/YYYY" />
 
-                <button onclick="submitStock()" style="border-radius: 0px" class="btn btn-outline-secondary"
+                <button onclick="submitStock()" style="border-radius: 0" class="btn btn-outline-secondary"
                     type="button">
                     Add Stock
                 </button>
