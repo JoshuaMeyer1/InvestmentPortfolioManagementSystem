@@ -1,9 +1,9 @@
 function settingsButtonHandler() {
 	
 	// set the current db settings variables
-    currentDBName = document.getElementById("dbName").value;
-    newDBPassword = document.getElementById("dbPassword").value;
-    currentDBPassword = document.getElementById("oldPassword").value;
+    let currentDBName = document.getElementById("dbName").value;
+    let newDBPassword = document.getElementById("dbPassword").value;
+    let currentDBPassword = document.getElementById("oldPassword").value;
     
     if (validateDBInformation(currentDBName, newDBPassword,currentDBPassword)) {
         document.getElementById("dbName").value = "";
@@ -20,14 +20,12 @@ function settingsButtonHandler() {
 
 // validate the database information
 function validateDBInformation(name, password, oldPassword) {
-    if (oldPassword == "s") {
-        if (name != "") {
+    if (oldPassword === "s") {
+        if (name !== "")
             updateUsername(name);
-        }
 
-        if (password != "") {
+        if (password !== "")
             updatePassword(password);
-        }
         return true;
      }
      return false;

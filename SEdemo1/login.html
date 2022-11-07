@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Database Login Page</title>
@@ -39,6 +39,7 @@
             border-radius: 40px;
             padding: 12px 36px;
         }
+
         .btn--primary:hover {
             background: #6c7ff2;
         }
@@ -106,21 +107,13 @@
         // verify username
         function verifyUsername(input) {
         	// placeholder verification function (only accepts "s")
-            if (input == "s") {
-                return true;
-            } else {
-                return false;
-            }
+            return input === "s";
         }
 
         // verify password
         function verifyPassword(input) {
         	// placeholder verification function (only accepts "s")
-            if (input == "s") {
-                return true;
-            } else {
-                return false;
-            }
+            return input === "s";
         }
         
 
@@ -141,10 +134,10 @@
                 <h5 id = "invalidLogin"></h5>
             </div>
             <form class="form" style="padding-top: 0.5rem;">
-                <input type="text" class="form__field form-rounded" id="username" placeholder="Username"/>
+                <label for="username"></label><input type="text" class="form__field form-rounded" id="username" placeholder="Username"/>
             </form>
             <form class="form" style="padding-top: 0.5rem;">
-                <input type="password" class="form__field form-rounded" id="password" placeholder="Password"/>
+                <label for="password"></label><input type="password" class="form__field form-rounded" id="password" placeholder="Password"/>
             </form>
             
             <div class="text-center">
