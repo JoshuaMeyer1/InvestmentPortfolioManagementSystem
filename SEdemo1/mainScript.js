@@ -29,7 +29,7 @@ function validateDBInformation(name, password, oldPassword) {
         return true;
      }
      return false;
-    
+
 }
 
 // function to update the database username
@@ -44,6 +44,6 @@ function updatePassword(password) {
     return true;
 }
 
-module.exports.validateDBInformation = validateDBInformation;
-module.exports.updateUsername = updateUsername;
-module.exports.updatePassword = updatePassword;
+// module.exports.validateDBInformation = validateDBInformation;
+// module.exports.updateUsername = updateUsername;
+// module.exports.updatePassword = updatePassword;
