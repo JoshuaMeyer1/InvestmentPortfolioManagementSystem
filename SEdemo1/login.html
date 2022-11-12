@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <title>Database Login Page</title>
@@ -39,7 +39,6 @@
             border-radius: 40px;
             padding: 12px 36px;
         }
-
         .btn--primary:hover {
             background: #6c7ff2;
         }
@@ -87,6 +86,17 @@
             }
         }
 
+        function createInput() {
+            if (validatePassword()) {
+                createUser();
+            }
+                
+        }
+
+        function validatePassword (pass) {
+
+        }
+
         /*
         function verifyDBName(input) {
             if (input == "s") {
@@ -107,13 +117,21 @@
         // verify username
         function verifyUsername(input) {
         	// placeholder verification function (only accepts "s")
-            return input === "s";
+            if (input == "s") {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         // verify password
         function verifyPassword(input) {
         	// placeholder verification function (only accepts "s")
-            return input === "s";
+            if (input == "s") {
+                return true;
+            } else {
+                return false;
+            }
         }
         
 
@@ -134,15 +152,18 @@
                 <h5 id = "invalidLogin"></h5>
             </div>
             <form class="form" style="padding-top: 0.5rem;">
-                <label for="username"></label><input type="text" class="form__field form-rounded" id="username" placeholder="Username"/>
+                <input type="text" class="form__field form-rounded" id="username" placeholder="Username"/>
             </form>
             <form class="form" style="padding-top: 0.5rem;">
-                <label for="password"></label><input type="password" class="form__field form-rounded" id="password" placeholder="Password"/>
+                <input type="password" class="form__field form-rounded" id="password" placeholder="Password"/>
             </form>
             
             <div class="text-center">
                 <form class="form">
-                    <button type="button" class="btn btn-primary" onclick="verifyInput()">ENTER</button>
+                    <button type="button" class="btn btn-primary" onclick="verifyInput()">LOGIN</button>
+                </form>
+                <form class="form">
+                    <button type="button" class="btn btn-primary" onclick="createInput()">SIGNUP</button>
                 </form>
             </div>
         </div>
