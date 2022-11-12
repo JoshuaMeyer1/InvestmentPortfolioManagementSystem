@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang = "en">
 
 <head>
     <title>Database Login Page</title>
@@ -70,10 +70,10 @@
 
     <script>
     
-    // verifies the input of login field
+        // verifies the input of login field
         function verifyInput() {
-            var dBUsername = document.getElementById("username").value;
-            var dBPassword = document.getElementById("password").value;
+            const dBUsername = document.getElementById("username").value;
+            const dBPassword = document.getElementById("password").value;
 
 
             if (verifyUsername(dBUsername) && verifyPassword(dBPassword)) {
@@ -87,14 +87,8 @@
         }
 
         function createInput() {
-            if (validatePassword()) {
+            if (validatePassword())
                 createUser();
-            }
-                
-        }
-
-        function validatePassword (pass) {
-
         }
 
         /*
@@ -117,21 +111,13 @@
         // verify username
         function verifyUsername(input) {
         	// placeholder verification function (only accepts "s")
-            if (input == "s") {
-                return true;
-            } else {
-                return false;
-            }
+            return input === "s";
         }
 
         // verify password
         function verifyPassword(input) {
         	// placeholder verification function (only accepts "s")
-            if (input == "s") {
-                return true;
-            } else {
-                return false;
-            }
+            return input === "s";
         }
         
 
