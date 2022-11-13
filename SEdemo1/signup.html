@@ -1,111 +1,58 @@
 <!DOCTYPE html>
 <html lang = "en">
 
-<head>
-  <title>Database Login Page</title>
-  <style>
+  <head>
+    <link rel="stylesheet" href="login.css">
 
-    body {
-      background-image: url("loginBackground.jpg");
-    }
-    html, body, .container {
-      height: 100%;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-
-    .btn {
-      display: flex;
-      background: transparent;
-      color: inherit;
-      font: inherit;
-      border: 0;
-      outline: 0;
-      padding: 0;
-      transition: all 200ms ease-in;
-      cursor: pointer;
-      margin-top: 10px;
-      width: 250px;
-    }
-    .btn--primary {
-      background: #7f8ff4;
-      color: #fff;
-      box-shadow: 0 0 10px 2px rgba(0, 0, 0, .1);
-      border-radius: 40px;
-      padding: 12px 36px;
-    }
-    .btn--primary:hover {
-      background: #6c7ff2;
-    }
-
-    .form__field {
-      width: 280px;
-      background: #fff;
-      color: #a3a3a3;
-      font: inherit;
-      box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .1);
-      border: 0;
-      outline: 0;
-      padding: 10px 18px;
-    }
-
-    .form-rounded {
-      border-radius: 1rem;
-    }
-
-    /* The message box is shown when the user clicks on the password field */
-    #message {
-      display:block;
-      background: #f1f1f1;
-      color: #000;
-      position: relative;
-      padding: 20px;
-      margin-top: 10px;
-    }
-
-    #message p {
-      padding: 10px 35px;
-      font-size: 18px;
-    }
-
-    /* Add a green text color and a checkmark when the requirements are right */
-    .valid {
-      color: green;
-    }
-
-    .valid:before {
-      position: relative;
-      left: -35px;
-      content: "✔";
-    }
-
-    /* Add a red text color and an "x" when the requirements are wrong */
-    .invalid {
-      color: red;
-    }
-
-    .invalid:before {
-      position: relative;
-      left: -35px;
-      content: "✖";
-    }
-  </style>
 
   <!-- boostrap -->
-<!--  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
-<!--  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
-<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>-->
-<!--  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-  <script src="mainScript.js"></script>
+    <script src="mainScript.js"></script>
+    <title>signup page</title>
+
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="containerItem">
+
+        <div class="text-center">
+          <h2 style="color:rgb(255, 255, 255)">IPMS Sign Up</h2>
+        </div>
+
+        <div class="text-center loginFieldInput">
+          <label for="username"></label><input type="text" class="form__field form-rounded" id="username" placeholder="Username"/>
+        </div>
+
+        <div class="text-center loginFieldInput">
+          <label for="password"></label><input type="password" class="form__field form-rounded" id="password" placeholder="Password" oninput="updateMessage()"/>
+        </div>
+
+        <div class="text-center loginFieldInput">
+          <label for="passwordConf"></label><input type="password" class="form__field form-rounded" id="passwordConf" placeholder="Confirm Password" oninput="updateMessage()"/>
+        </div>
+
+        <div class="text-center">
+          <button type="button" class="btn btn-primary" onclick="createAccount()">Create New Account</button>
+        </div>
+
+        <div id="message">
+          <p id="confirm" class="valid">password and confirmation are the same</p>
+          <p id="letter" class="invalid">password contains a lowercase letter</p>
+          <p id="capital" class="invalid">password contains a capital letter</p>
+          <p id="number" class="invalid">password contains a number</p>
+          <p id="length" class="invalid">password is at least 8 characters</p>
+        </div>
+      </div>
+    </div>
+
+  </body>
 
   <script>
-
   // form entries
   const username = document.getElementById("username");
   const password = document.getElementById("password");
@@ -118,105 +65,62 @@
   const number = document.getElementById("number");
   const length = document.getElementById("length");
 
-  password.oninput = function() {
-      // // password and confirm password should be the same
-      // if (password.value === passwordConf.value) {
-      //   confirm.classList.remove("invalid");
-      //   confirm.classList.add("valid");
-      // } else {
-      //   confirm.classList.remove("valid");
-      //   confirm.classList.add("invalid");
-      // }
-
-      // password must contain a lowercase
-      if(password.value.match(/[a-z]/g)) {
-        letter.classList.remove("invalid");
-        letter.classList.add("valid");
-      } else {
-        letter.classList.remove("valid");
-        letter.classList.add("invalid");
-      }
-
-      // Validate capital letters
-      if(password.value.match(/[A-Z]/g)) {
-        capital.classList.remove("invalid");
-        capital.classList.add("valid");
-      } else {
-        capital.classList.remove("valid");
-        capital.classList.add("invalid");
-      }
-
-      // Validate numbers
-      if(password.value.match(/[0-9]/g)) {
-        number.classList.remove("invalid");
-        number.classList.add("valid");
-      } else {
-        number.classList.remove("valid");
-        number.classList.add("invalid");
-      }
-
-      // Validate length
-      if(password.value.length >= 8) {
-        length.classList.remove("invalid");
-        length.classList.add("valid");
-      } else {
-        length.classList.remove("valid");
-        length.classList.add("invalid");
-      }
+  function updateMessage() {
+    // password and confirm password should be the same
+    if (password.value === passwordConf.value) {
+      confirm.classList.remove("invalid");
+      confirm.classList.add("valid");
+    } else {
+      confirm.classList.remove("valid");
+      confirm.classList.add("invalid");
     }
 
-    function createAccount() {
-
+    // password must contain a lowercase
+    if(password.value.match(/[a-z]/g)) {
+      letter.classList.remove("invalid");
+      letter.classList.add("valid");
+    } else {
+      letter.classList.remove("valid");
+      letter.classList.add("invalid");
     }
 
-    // // When the user clicks on the password field, show the message box
-    // password.onfocus = function() {
-    //   document.getElementById("message").style.display = "block";
-    // }
-    //
-    // // When the user clicks outside of the password field, hide the message box
-    // password.onblur = function() {
-    //   document.getElementById("message").style.display = "none";
-    // }
+    // Validate capital letters
+    if(password.value.match(/[A-Z]/g)) {
+      capital.classList.remove("invalid");
+      capital.classList.add("valid");
+    } else {
+      capital.classList.remove("valid");
+      capital.classList.add("invalid");
+    }
+
+    // Validate numbers
+    if(password.value.match(/[0-9]/g)) {
+      number.classList.remove("invalid");
+      number.classList.add("valid");
+    } else {
+      number.classList.remove("valid");
+      number.classList.add("invalid");
+    }
+
+    // Validate length
+    if(password.value.length >= 8) {
+      length.classList.remove("invalid");
+      length.classList.add("valid");
+    } else {
+      length.classList.remove("valid");
+      length.classList.add("invalid");
+    }
+  }
+
+  function createAccount() {
+    if (confirm.classList.contains("valid") &&
+            letter.classList.contains("valid") &&
+            capital.classList.contains("valid") &&
+            number.classList.contains("valid") &&
+            length.classList.contains("valid"))
+      return; // Implement createAccount
+  }
 
   </script>
 
-</head>
-
-<body>
-
-<div class="container">
-  <div class="containerItem">
-
-    <div class="text-center">
-      <h2 style="color:rgb(255, 255, 255)">IPMS Sign Up</h2>
-    </div>
-
-    <form class="form" style="padding-top: 0.5rem;">
-      <label for="username"></label><input type="text" class="form__field form-rounded" id="username" placeholder="Username"/>
-    </form>
-    <form class="form" style="padding-top: 0.5rem;">
-      <label for="password"></label><input type="password" class="form__field form-rounded" id="password" placeholder="Password"/>
-    </form>
-    <form class="form" style="padding-top: 0.5rem;">
-      <label for="passwordConf"></label><input type="password" class="form__field form-rounded" id="passwordConf" placeholder="Confirm Password"/>
-    </form>
-
-    <div class="text-center">
-      <form class="form">
-        <button type="button" class="btn btn-primary" onclick="createAccount()">Create New Account</button>
-      </form>
-    </div>
-
-    <div id="message">
-      <p id="confirm" class="valid">password and confirmation are the same</p>
-      <p id="letter" class="invalid">password contains a lowercase letter</p>
-      <p id="capital" class="invalid">password contains a capital letter</p>
-      <p id="number" class="invalid">password contains a number</p>
-      <p id="length" class="invalid">password is at least 8 characters</p>
-    </div>
-  </div>
-</div>
-
-</body>
 </html>
