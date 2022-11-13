@@ -29,7 +29,6 @@ function validateDBInformation(name, password, oldPassword) {
         return true;
      }
      return false;
-
 }
 
 // function to update the database username

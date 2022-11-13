@@ -27,7 +27,6 @@ body {
 }
 .navigation ul li a {
     position: relative;
-    display: block;
     width: 100%;
     display: flex;
     text-decoration: none;
@@ -72,20 +71,14 @@ body {
 }
 
 .contentContainer h2 {
-    padding-top: 0.25rem;
-    padding-bottom: 0.3rem;
-    padding-right: 2rem;
-    padding-left: 2rem;
+    padding: 0.25rem 2rem 0.3rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,garamond,serif;
     border-left: 6px solid green;
     background-color: #cfffd3;
 }
 
 .contentContainer button {
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    padding: 0.25rem 0.4rem;
 }
 
 #startStopButtons {
