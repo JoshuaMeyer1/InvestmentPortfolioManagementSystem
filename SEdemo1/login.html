@@ -18,7 +18,6 @@
             const dBUsername = document.getElementById("username").value;
             const dBPassword = document.getElementById("password").value;
 
-
             if (verifyUsername(dBUsername) && verifyPassword(dBPassword)) {
                 localStorage.setItem("localDBName", dBUsername);
                 window.location.href = "userProfile.html";
@@ -27,11 +26,6 @@
                 document.getElementById("username").value = "";
                 document.getElementById("password").value = "";
             }
-        }
-
-        function createInput() {
-            if (validatePassword())
-                createUser();
         }
 
         /*
@@ -77,20 +71,23 @@
             <div class="text-center">
                 <h5 id = "invalidLogin"></h5>
             </div>
-            <form class="loginFieldInput">
+
+            <div class="text-center loginFieldInput">
                 <label for="username"></label><input type="text" class="form__field form-rounded" id="username" placeholder="Username"/>
-            </form>
-            <form class="loginFieldInput">
+            </div>
+
+            <div class="text-center loginFieldInput">
                 <label for="password"></label><input type="password" class="form__field form-rounded" id="password" placeholder="Password"/>
-            </form>
+            </div>
             
             <div class="text-center">
-                <form class="form">
+                <div>
                     <button type="button" class="btn btn-primary" onclick="verifyInput()">LOGIN</button>
-                </form>
-                <form class="form">
-                    <button type="button" class="btn btn-primary" onclick="createInput()">SIGNUP</button>
-                </form>
+                </div>
+
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href = 'signup.html'">SIGNUP</button>
+                </div>
             </div>
         </div>
     </div>
