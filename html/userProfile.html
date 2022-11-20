@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<head>
+    <title>IPMS</title>
+    <link rel="icon" href="../styles/logo.svg" type="image/icon type">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/passwordValidation.css">
+    <!-- boostrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js" type="text/javascript"></script>
+<script type="module" src="../js/mainScript.js"></script>
+<script type="module" src="../js/userProfile.js"></script>
+<!-- navigation bar -->
+<div class="navigation">
+    <ul>
+        <li>
+            <a href="#" style="padding-left:0">
+                <object data="../styles/logo.svg" width="200" height="200"></object>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <span class="linkText">User Profile</span>
+            </a>
+        </li>
+        <li>
+            <a href="portfolio.html">
+                <span class="linkText">Portfolio</span>
+            </a>
+        </li>
+        <li>
+            <a href="portfolioAnalysis.html">
+                <span class="linkText">Portfolio Analysis</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- page header -->
+<div class="header">
+    <h2>Profile Settings</h2>
+</div>
+<!--  database login form -->
+<div class="contentContainer">
+    <div class="containerItem">
+        <div class="text-center fieldInput">
+            <label for="username"></label><input type="text" id="username"
+                                                     placeholder="New Username"/>
+        </div>
+        <div class="text-center">
+            <button type="button" id="setUserButton" class="btn btn-primary disabled">Set Username</button>
+        </div>
+        <div class="text-center fieldInput">
+            <label for="passwordOld"></label><input type="password" id="passwordOld"
+                                                 placeholder="Old Password"/>
+        </div>
+        <div class="text-center fieldInput">
+            <label for="password"></label><input type="password" id="password"
+                                                 placeholder="New Password"/>
+        </div>
+        <div class="text-center fieldInput">
+            <label for="passwordConf"></label><input type="password" id="passwordConf"
+                                                     placeholder="Confirm New Password"/>
+        </div>
+        <div class="text-center" style="color:red">
+            <h5 id="invalidPass"></h5>
+        </div>
+        <div class="text-center">
+            <button type="button" id="setPassButton" class="btn btn-primary disabled">Set Password</button>
+        </div>
+        <div id="passValidate">
+            <p id="confirm" class="valid">password and confirmation are the same</p>
+            <p id="letter" class="invalid">password contains a lowercase letter</p>
+            <p id="capital" class="invalid">password contains a capital letter</p>
+            <p id="number" class="invalid">password contains a number</p>
+            <p id="length" class="invalid">password is at least 8 characters</p>
+        </div>
+        <div class="text-center">
+            <button type="button" id="logoutButton" class="btn btn-primary">Log out</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
