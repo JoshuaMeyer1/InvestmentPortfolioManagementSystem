@@ -1,12 +1,17 @@
+// const MongoClient = require("mongodb").MongoClient;
+//
+// const dbConnectionURI = "mongodb+srv://sedemogroup:dragon123@ipms-database.jh5ed9t.mongodb.net/?retryWrites=true&w=majority";
+// const dbClient = new MongoClient(dbConnectionURI);
+
 $(document).ready(function() {
     $("#username").on("input", function() {
-        updateMessage($("#username"), $("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#registerButton"))
+        updatePassValid($("#username"), $("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#registerButton"))
     })
     $("#password").on("input", function() {
-        updateMessage($("#username"), $("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#registerButton"))
+        updatePassValid($("#username"), $("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#registerButton"))
     })
     $("#passwordConf").on("input", function() {
-        updateMessage($("#username"), $("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#registerButton"))
+        updatePassValid($("#username"), $("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#registerButton"))
     })
     $("#registerButton").click(function() {
         if ($("#registerButton").hasClass("disabled")) return;
@@ -15,7 +20,7 @@ $(document).ready(function() {
     })
 });
 
-function updateMessage(username, password, passwordConf, confirm, letter, capital, number, length, registerButton) {
+function updatePassValid(username, password, passwordConf, confirm, letter, capital, number, length, registerButton) {
     // password and confirm password should be the same
     if (password.val() === passwordConf.val()) {
         confirm.removeClass("invalid");
@@ -72,6 +77,21 @@ function updateMessage(username, password, passwordConf, confirm, letter, capita
 }
 
 function createAccount(username, password) {
+    // try {
+    //     // Connect to the login database...
+    //     const db = dbClient.db("test");
+    //     const loginCollection = db.collection("login");
+    //     let result = loginCollection.insertOne(
+    //         {
+    //             "username": username,
+    //             "password": password
+    //         }
+    //     );
+    //
+    //     console.log(result);
+    // } finally {
+    //     // Cleanup code here...
+    // }
     localStorage.setItem("localDBUsername", username);
     localStorage.setItem("localDBPassword", password);
 }

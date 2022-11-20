@@ -1,4 +1,4 @@
 $(document).ready(function() {
-    if (localStorage.getItem("session") === "expired")
+    if (localStorage.getItem("DBSession") === "expired")
         window.location.href = "login.html";
 });
