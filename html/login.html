@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8"/>
+
 <head>
     <title>IPMS</title>
     <link rel="icon" href="../styles/logo.svg" type="image/icon type">
@@ -11,30 +12,31 @@
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-<script type="module" src="../js/mainScript.js"></script>
 <script type="module" src="../js/login.js"></script>
 <div class="container">
     <object data="../styles/logo.svg" width="200" height="200"></object>
     <div class="containerItem">
-        <div class="text-center fieldInput">
-            <label for="username"></label><input type="text" id="username"
-                                                 placeholder="Username"/>
-        </div>
-        <div class="text-center fieldInput">
-            <label for="password"></label><input type="password" id="password"
-                                                 placeholder="Password"/>
-        </div>
-        <div class="text-center" style="color:red">
-            <h5 id="invalidLogin"></h5>
-        </div>
-        <div class="text-center">
-            <div>
-                <button type="button" class="btn btn-primary" id="loginButton">LOG IN</button>
+        <form action="/sign_in" method="POST">
+            <div class="text-center fieldInput">
+                <label for="username"></label><input type="text" id="username"
+                                                     placeholder="Username"/>
             </div>
-            <div>
-                <button type="button" class="btn btn-primary" id="registerButton">REGISTER</button>
+            <div class="text-center fieldInput">
+                <label for="password"></label><input type="password" id="password"
+                                                     placeholder="Password"/>
             </div>
-        </div>
+            <div class="text-center" style="color:red">
+                <h5 id="invalidLogin"></h5>
+            </div>
+            <div class="text-center">
+                <div>
+                    <button type="submit" class="btn btn-primary" id="loginButton">LOG IN</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary" id="registerButton">REGISTER</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 </body>

@@ -1,8 +1,3 @@
-// const MongoClient = require("mongodb").MongoClient;
-//
-// const dbConnectionURI = "mongodb+srv://sedemogroup:dragon123@ipms-database.jh5ed9t.mongodb.net/?retryWrites=true&w=majority";
-// const dbClient = new MongoClient(dbConnectionURI);
-
 $(document).ready(function() {
     $("#username").on("input", function() {
         updatePassValid($("#username"), $("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#registerButton"))
@@ -13,11 +8,11 @@ $(document).ready(function() {
     $("#passwordConf").on("input", function() {
         updatePassValid($("#username"), $("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#registerButton"))
     })
-    $("#registerButton").click(function() {
-        if ($("#registerButton").hasClass("disabled")) return;
-        createAccount($("#username").val(), $("#password").val());
-        window.location.href = "login.html";
-    })
+    // $("#registerButton").click(function() {
+    //     if ($("#registerButton").hasClass("disabled")) return;
+    //     $("#registerForm").submit();
+    //     window.location.href = "login.html";
+    // })
 });
 
 function updatePassValid(username, password, passwordConf, confirm, letter, capital, number, length, registerButton) {
@@ -74,24 +69,4 @@ function updatePassValid(username, password, passwordConf, confirm, letter, capi
         length.hasClass("valid"))
         registerButton.removeClass("disabled");
     else registerButton.addClass("disabled");
-}
-
-function createAccount(username, password) {
-    // try {
-    //     // Connect to the login database...
-    //     const db = dbClient.db("test");
-    //     const loginCollection = db.collection("login");
-    //     let result = loginCollection.insertOne(
-    //         {
-    //             "username": username,
-    //             "password": password
-    //         }
-    //     );
-    //
-    //     console.log(result);
-    // } finally {
-    //     // Cleanup code here...
-    // }
-    localStorage.setItem("localDBUsername", username);
-    localStorage.setItem("localDBPassword", password);
 }
