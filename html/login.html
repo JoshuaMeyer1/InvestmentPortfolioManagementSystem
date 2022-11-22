@@ -12,17 +12,18 @@
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="module" src="../app.js"></script>
 <script type="module" src="../js/login.js"></script>
 <div class="container">
     <object data="../styles/logo.svg" width="200" height="200"></object>
     <div class="containerItem">
         <form action="/sign_in" method="POST">
             <div class="text-center fieldInput">
-                <label for="username"></label><input type="text" id="username"
+                <label for="username"></label><input type="text" name="username" id="username"
                                                      placeholder="Username"/>
             </div>
             <div class="text-center fieldInput">
-                <label for="password"></label><input type="password" id="password"
+                <label for="password"></label><input type="password" name="username" id="password"
                                                      placeholder="Password"/>
             </div>
             <div class="text-center" style="color:red">

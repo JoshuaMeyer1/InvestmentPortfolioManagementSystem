@@ -4,35 +4,35 @@ $(document).ready(function() {
             $("#setUserButton").removeClass("disabled");
         else $("#setUserButton").addClass("disabled");
     });
-    $("#setUserButton").click(function() {
-        let username = $("#username")
-        localStorage.setItem("localDBUsername", username.val())
-        username.val("");
-    });
+    // $("#setUserButton").click(function() {
+    //     let username = $("#username")
+    //     localStorage.setItem("localDBUsername", username.val())
+    //     username.val("");
+    // });
     $("#password").on("input", function() {
         updatePassValid($("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#setPassButton"));
     });
     $("#passwordConf").on("input", function() {
         updatePassValid($("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#setPassButton"));
     });
-    $("#setPassButton").click(function() {
-        let setPassButton = $("#setPassButton");
-        if (setPassButton.hasClass("disabled")) return;
-        let password = $("#password");
-        if (verifyInput(password)) {
-            setPassword(password);
-            localStorage.setItem("localDBSession", "expired");
-            window.location.href = "login.html";
-        } else {
-            $("#invalidPass").html("Password is incorrect");
-            $("#passwordOld").val("");
-            setPassButton.addClass("disabled");
-        }
-    });
-    $("#logoutButton").click(function() {
-        localStorage.setItem("localDBSession", "expired");
-        window.location.href = "login.html";
-    });
+    // $("#setPassButton").click(function() {
+    //     let setPassButton = $("#setPassButton");
+    //     if (setPassButton.hasClass("disabled")) return;
+    //     let password = $("#password");
+    //     if (verifyInput(password)) {
+    //         setPassword(password);
+    //         localStorage.setItem("localDBSession", "expired");
+    //         window.location.href = "login.html";
+    //     } else {
+    //         $("#invalidPass").html("Password is incorrect");
+    //         $("#passwordOld").val("");
+    //         setPassButton.addClass("disabled");
+    //     }
+    // });
+    // $("#logoutButton").click(function() {
+    //     localStorage.setItem("localDBSession", "expired");
+    //     window.location.href = "login.html";
+    // });
 });
 
 function updatePassValid(password, passwordConf, confirm, letter, capital, number, length, setPassButton) {
@@ -88,13 +88,4 @@ function updatePassValid(password, passwordConf, confirm, letter, capital, numbe
         length.hasClass("valid"))
         setPassButton.removeClass("disabled");
     else setPassButton.addClass("disabled");
-}
-
-function setPassword(password) {
-    localStorage.setItem("localDBPassword", password);
-}
-
-// verifies the input of passwordOld field
-function verifyInput(password) {
-    return localStorage.getItem("localDBPassword") === password.val();
 }

@@ -1,18 +1,34 @@
 $(document).ready(function() {
-    $("#username").on("input", function() {
+    $("#username").on("input", () => {
         updatePassValid($("#username"), $("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#registerButton"))
     })
-    $("#password").on("input", function() {
+    $("#password").on("input", () => {
         updatePassValid($("#username"), $("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#registerButton"))
     })
-    $("#passwordConf").on("input", function() {
+    $("#passwordConf").on("input", () => {
         updatePassValid($("#username"), $("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#registerButton"))
     })
-    // $("#registerButton").click(function() {
-    //     if ($("#registerButton").hasClass("disabled")) return;
-    //     $("#registerForm").submit();
-    //     window.location.href = "login.html";
-    // })
+    $("#registerButton").click(() => {
+        if ($("#registerButton").hasClass('disabled')) return;
+
+        $.ajax({
+            traditional: true,
+            url: '/sign_up',
+            type: 'POST',
+            datatype: 'json',
+            data: {
+                'username' : $('#username').val(),
+                'password' : $('#password').val()
+            },
+            success: (data, status, jqXHR) => {
+                if (data.username === 'not in use')
+                    window.location.href = "userProfile.html?username=" + $("#username");
+                else
+                    $('#usernameInUse').html('This username is in use')
+            },
+
+        });
+    });
 });
 
 function updatePassValid(username, password, passwordConf, confirm, letter, capital, number, length, registerButton) {
