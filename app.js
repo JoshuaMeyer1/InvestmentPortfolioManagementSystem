@@ -4,14 +4,7 @@ const mongoose = require('mongoose')
 const userModel = require('./user')
 
 const app = express()
-
-const http = require('http')
-const fs = require('fs')
-const url = require('url')
-// const UserModel = require("./user")
-const bodyParser = require("body-parser")
-const { monitorEventLoopDelay } = require('perf_hooks')
-const { assert } = require('console')
+const bodyParser = require("body-parser");
 const port = 8080
 
 app.use(bodyParser.json())
@@ -34,7 +27,6 @@ mongoose.connect('mongodb+srv://sedemogroup:dragon123@ipms-database.jh5ed9t.mong
 
 app.post("/sign_up", (req, res) => {
     userModel.findOne({ username: req.body.username }, (err, data) => {
-        if (err) return res.status(500).send(err)
         if (data) return res.json({ status: 'in use' })
         let newUser = new userModel({
             username: req.body.username,
@@ -51,8 +43,7 @@ app.post("/sign_up", (req, res) => {
 
 app.post("/sign_in", (req, res) => {
     userModel.findOne({ username: req.body.username }, (err, data) => {
-        if (err) return res.status(500).send(err)
-        if (data.password === req.body.password)
+        if ( data && data.password === req.body.password)
             return res.json({ status: 'login accepted' })
         return res.json({ status: 'login rejected' })
     })
@@ -77,7 +68,7 @@ app.post("/initialStock", (req, res) => {
 })
 
 app.post("/removeStock", (req, res) => {
-    const test = userModel.find((err, data) => {
+    userModel.find((err, data) => {
         if (err) {
             return res.status(500).send(err)
         } else {
@@ -91,7 +82,7 @@ app.post("/removeStock", (req, res) => {
                         if (portfolio[j][0] === req.body.stock && portfolio[j][1] === req.body.exchange && portfolio[j][2] === req.body.date) {
                             portfolio.splice(j, 1)
 
-                            userModel.updateOne({uname: req.body.username}, {$set: {port: portfolio}}, (err, doc) => {
+                            userModel.updateOne({uname: req.body.username}, {$set: {port: portfolio}}, (err) => {
                                 if (err) console.log(err)
                             })
                             console.log("test")
@@ -107,7 +98,7 @@ app.post("/removeStock", (req, res) => {
 })
 
 app.post("/submitStock", (req, res) => {
-    const test = userModel.find((err, data) => {
+    userModel.find((err, data) => {
         if (err) {
             return res.status(500).send(err)
         } else {
@@ -115,7 +106,7 @@ app.post("/submitStock", (req, res) => {
                 if (data[i].uname === req.body.username) {
                     const currentport = data[i].port
                     currentport.push([req.body.stock, req.body.exchange, req.body.date])
-                    userModel.updateOne({username: req.body.username}, {$set: {port: currentport}}, (err, doc) => {
+                    userModel.updateOne({username: req.body.username}, {$set: {port: currentport}}, (err) => {
                         if (err) console.log(err)
                     })
                     res.json({
@@ -129,7 +120,7 @@ app.post("/submitStock", (req, res) => {
 
 app.post("/userProfileChange", (req, res) => {
     let changedusername = false
-    const test = userModel.find((err, data) => {
+    userModel.find((err, data) => {
         if (err) {
             return res.status(500).send(err)
         } else {
@@ -139,13 +130,13 @@ app.post("/userProfileChange", (req, res) => {
                         // update the database
                         if (req.body.newpass !== "") {
                             // update password
-                            userModel.updateOne({username: req.body.oldusername}, {$set: {password: req.body.newpass}}, (err, doc) => {
+                            userModel.updateOne({username: req.body.oldusername}, {$set: {password: req.body.newpass}}, (err) => {
                                 if (err) console.log(err)
                             })
                         }
                         if (req.body.newusername !== "") {
                             // update username
-                            userModel.updateOne({username: req.body.oldusername}, {$set: {username: req.body.newusername}}, (err, doc) => {
+                            userModel.updateOne({username: req.body.oldusername}, {$set: {username: req.body.newusername}}, (err) => {
                                 if (err) console.log(err)
                             })
                             changedusername = true

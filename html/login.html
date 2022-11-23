@@ -17,27 +17,25 @@
 <div class="container">
     <object data="../styles/logo.svg" width="200" height="200"></object>
     <div class="containerItem">
-        <form action="/sign_in" method="POST">
-            <div class="text-center fieldInput">
-                <label for="username"></label><input type="text" name="username" id="username"
-                                                     placeholder="Username"/>
+        <div class="text-center fieldInput">
+            <label for="username"></label><input type="text" name="username" id="username"
+                                                 placeholder="Username"/>
+        </div>
+        <div class="text-center fieldInput">
+            <label for="password"></label><input type="password" name="username" id="password"
+                                                 placeholder="Password"/>
+        </div>
+        <div class="text-center" style="color:red">
+            <h5 id="invalidLogin"></h5>
+        </div>
+        <div class="text-center">
+            <div>
+                <button type="submit" class="btn btn-primary" id="loginButton">LOG IN</button>
             </div>
-            <div class="text-center fieldInput">
-                <label for="password"></label><input type="password" name="username" id="password"
-                                                     placeholder="Password"/>
+            <div>
+                <button type="button" class="btn btn-primary" id="registerButton">REGISTER</button>
             </div>
-            <div class="text-center" style="color:red">
-                <h5 id="invalidLogin"></h5>
-            </div>
-            <div class="text-center">
-                <div>
-                    <button type="submit" class="btn btn-primary" id="loginButton">LOG IN</button>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-primary" id="registerButton">REGISTER</button>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 </body>

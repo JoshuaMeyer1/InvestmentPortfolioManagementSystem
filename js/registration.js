@@ -32,7 +32,7 @@ $(document).ready(function() {
             },
             success: (data) => {
                 if (data.status === 'not in use')
-                    window.location.href = "userProfile.html?username=" + $("#username")
+                    window.location.href = "userProfile.html?username=" + $("#username").val()
                 else
                     $('#usernameInUse').html('This username is in use')
             }
