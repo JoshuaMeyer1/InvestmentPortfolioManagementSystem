@@ -148,7 +148,7 @@
                 </a>
             </li>
             <li>
-                <a href="userProfile.html" style="color: #a8a8a8">
+                <a href="javascript:window.location.href = 'userProfile.html?username=' + getParameter('username');" style="color: #a8a8a8">
                     <span class="linkText">User Profile</span>
                 </a>
             </li>
@@ -160,7 +160,7 @@
             </li>
 
             <li>
-                <a href="portfolioAnalysis.html" style="color: #a8a8a8">
+                <a href="javascript:window.location.href = 'portfolioAnalysis.html?username=' + getParameter('username');" style="color: #a8a8a8">
                     <span class="linkText">Portfolio Analysis</span>
                 </a>
             </li>
@@ -182,14 +182,14 @@
                 <input type="text" class="form-control" id="stockName" placeholder="ex. TSLA, AMZA, AAPL" />
 
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-lg">Stock Exchange</span>
+                    <span class="input-group-text" id="inputGroup-sizing-lg">Quantity</span>
                 </div>
-                <input type="text" class="form-control" id="stockExchange" placeholder="Exe. Nasdaq, nyse" />
+                <input type="text" class="form-control" id="stockExchange" placeholder="Exe. 1, 2, 200" />
 
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-lg">Buy Date</span>
                 </div>
-                <input type="text" class="form-control" id="buyDate" placeholder="MM/DD/YYYY" />
+                <input type="text" class="form-control" id="buyDate" placeholder="YYYY-MM-DD" />
 
                 <button onclick="submitStock()" style="border-radius: 0px" class="btn btn-outline-secondary"
                     type="button">
@@ -209,7 +209,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Stock</th>
-                        <th scope="col">Stock Exchange</th>
+                        <th scope="col">Quantity</th>
                         <th scope="col">Buy Date</th>
                         <th scope="col">Remove</th>
                     </tr>
