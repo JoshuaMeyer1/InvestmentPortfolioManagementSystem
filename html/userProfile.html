@@ -23,17 +23,17 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="javascript:window.location.href = 'userProfile.html?username=' + localStorage.getItem('IPMSUsername')">
                 <span class="linkText">User Profile</span>
             </a>
         </li>
         <li>
-            <a href="portfolio.html">
+            <a href="#">
                 <span class="linkText">Portfolio</span>
             </a>
         </li>
         <li>
-            <a href="portfolioAnalysis.html">
+            <a href="javascript:window.location.href = 'portfolioAnalysis.html?username=' + getParameter('username')">
                 <span class="linkText">Portfolio Analysis</span>
             </a>
         </li>
@@ -53,6 +53,9 @@
         <div class="text-center">
             <button type="button" id="setUserButton" class="btn btn-primary disabled">Set Username</button>
         </div>
+        <div class="text-center">
+            <h5 id="usernameUpdated"></h5>
+        </div>
         <div class="text-center fieldInput">
             <label for="passwordOld"></label><input type="password" id="passwordOld"
                                                  placeholder="Old Password"/>
@@ -65,8 +68,8 @@
             <label for="passwordConf"></label><input type="password" id="passwordConf"
                                                      placeholder="Confirm New Password"/>
         </div>
-        <div class="text-center" style="color:red">
-            <h5 id="invalidPass"></h5>
+        <div class="text-center">
+            <h5 id="passwordUpdated"></h5>
         </div>
         <div class="text-center">
             <button type="button" id="setPassButton" class="btn btn-primary disabled">Set Password</button>

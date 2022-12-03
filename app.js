@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const userModel = require('./user')
 
 const app = express()
-const bodyParser = require("body-parser");
+const bodyParser = require("body-parser")
 const port = 8080
 
 app.use(bodyParser.json())
@@ -27,25 +27,23 @@ mongoose.connect('mongodb+srv://sedemogroup:dragon123@ipms-database.jh5ed9t.mong
 
 app.post("/sign_up", (req, res) => {
     userModel.findOne({ username: req.body.username }, (err, data) => {
-        if (data) return res.json({ status: 'in use' })
+        if (data) return res.json({ status: 'Username is in use' })
         let newUser = new userModel({
             username: req.body.username,
             password: req.body.password,
             portfolio: []
         })
-        newUser.save().then(
-            () => console.log("new user save success"),
-            () => console.log("new user save failure")
-        )
-        return res.json({ status: 'not in use' })
+        newUser.save().then(() => {
+            return res.json({ status: 'New user saved' })
+        })
     })
 })
 
 app.post("/sign_in", (req, res) => {
     userModel.findOne({ username: req.body.username }, (err, data) => {
-        if ( data && data.password === req.body.password)
-            return res.json({ status: 'login accepted' })
-        return res.json({ status: 'login rejected' })
+        if (data && data.password === req.body.password)
+            return res.json({ status: 'Login accepted' })
+        return res.json({ status: 'Login rejected' })
     })
 })
 
@@ -118,46 +116,28 @@ app.post("/submitStock", (req, res) => {
     })
 })
 
-app.post("/userProfileChange", (req, res) => {
-    let changedusername = false
-    userModel.find((err, data) => {
-        if (err) {
-            return res.status(500).send(err)
-        } else {
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].username === req.body.oldusername) {
-                    if (data[i].pword === req.body.oldpass) {
-                        // update the database
-                        if (req.body.newpass !== "") {
-                            // update password
-                            userModel.updateOne({username: req.body.oldusername}, {$set: {password: req.body.newpass}}, (err) => {
-                                if (err) console.log(err)
-                            })
-                        }
-                        if (req.body.newusername !== "") {
-                            // update username
-                            userModel.updateOne({username: req.body.oldusername}, {$set: {username: req.body.newusername}}, (err) => {
-                                if (err) console.log(err)
-                            })
-                            changedusername = true
-                        }
-                    } else {
-                        res.json({
-                            status: 'failed',
-                            changed: false
-                        })
-                    }
-                }
-            }
-        }
+app.post("/set_username", (req, res) => {
+    let validateFilter = { username: req.body.newUsername }
+    let updateFilter = { username: req.body.username }
+    let update = { $set: { username: req.body.newUsername } }
+
+    userModel.findOne(validateFilter, (err, data) => {
+        if (data) return res.json({ status: "Username is in use" })
+        else userModel.findOneAndUpdate(updateFilter, update, null, () => {
+            return res.json({ status: "Username updated" })
+        })
     })
-    res.json({
-        status: 'success',
-        changed: true
-    })
+
 })
 
-// TODO: implement seperate set_username and set_password to avoid control hell
-// app.post('/set_username', (req, res) => {
-//
-// })
+app.post("/set_password", (req, res) => {
+    let filter = { username: req.body.username, password: req.body.password }
+    let update = { $set: { password: req.body.newPassword } }
+
+    userModel.findOne(filter, (err, data) => {
+        if (!data) return res.json({ status: "Incorrect password" }) // Assuming their username exists
+        else userModel.findOneAndUpdate(filter, update, null, () => {
+            return res.json({ status: "Password updated" })
+        })
+    })
+})

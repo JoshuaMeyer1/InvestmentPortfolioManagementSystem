@@ -8,46 +8,68 @@ $(document).ready(function() {
         if ($("#setUserButton").hasClass('disabled')) return;
 
         $.ajax({
-            traditional: true,
             url: '/set_username',
             type: 'POST',
             datatype: 'json',
             data: {
-                'username' : $('#username').val(),
-                'password' : $('#password').val()
+                'username' : localStorage.getItem("IPMSUsername"),
+                'newUsername' : $('#username').val()
             },
             success: (data) => {
-                if (data.status === 'not in use')
-                    window.location.href = "userProfile.html?username=" + $("#username")
-                else
-                    $('#usernameInUse').html('This username is in use')
+                let usernameUpdated = $('#usernameUpdated')
+                if (data.status === 'Username updated') {
+                    let username = $('#username').val()
+                    // window.location.href = 'userProfile.html?username=' + username
+                    localStorage.setItem("IPMSUsername", username)
+                    usernameUpdated.html('Username updated')
+                    usernameUpdated.removeClass("invalid")
+                    usernameUpdated.addClass("valid")
+                } else {
+                    usernameUpdated.html('This username is in use')
+                    usernameUpdated.removeClass("valid")
+                    usernameUpdated.addClass("invalid")
+                }
             }
         })
     })
     $("#password").on("input", function() {
         updatePassValid($("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#setPassButton"))
+        $('#passwordUpdated').html('')
     })
     $("#passwordConf").on("input", function() {
         updatePassValid($("#password"), $("#passwordConf"), $("#confirm"), $("#letter"), $("#capital"), $("#number"), $("#length"), $("#setPassButton"))
+        $('#passwordUpdated').html('')
     })
-    // $("#setPassButton").click(function() {
-    //     let setPassButton = $("#setPassButton")
-    //     if (setPassButton.hasClass("disabled")) return
-    //     let password = $("#password")
-    //     if (verifyInput(password)) {
-    //         setPassword(password)
-    //         localStorage.setItem("localDBSession", "expired")
-    //         window.location.href = "login.html"
-    //     } else {
-    //         $("#invalidPass").html("Password is incorrect")
-    //         $("#passwordOld").val("")
-    //         setPassButton.addClass("disabled")
-    //     }
-    // })
-    // $("#logoutButton").click(function() {
-    //     localStorage.setItem("localDBSession", "expired")
-    //     window.location.href = "login.html"
-    // })
+    $("#setPassButton").click(function() {
+        if ($("#setPassButton").hasClass("disabled")) return
+
+        $.ajax({
+            url: '/set_password',
+            type: 'POST',
+            datatype: 'json',
+            data: {
+                'username': localStorage.getItem("IPMSUsername"),
+                'password': $('#passwordOld').val(),
+                'newPassword': $('#password').val()
+            },
+            success: (data) => {
+                let passwordUpdated = $('#passwordUpdated')
+                if (data.status === 'Password updated') {
+                    passwordUpdated.removeClass('invalid')
+                    passwordUpdated.addClass('valid')
+                    passwordUpdated.html('Password updated')
+                } else {
+                    passwordUpdated.removeClass('valid')
+                    passwordUpdated.addClass('invalid')
+                    passwordUpdated.html('Invalid password')
+                }
+            }
+        })
+    })
+    $("#logoutButton").click(function() {
+        localStorage.removeItem("IPMSUsername")
+        window.location.href = "login.html"
+    })
 })
 
 function updatePassValid(password, passwordConf, confirm, letter, capital, number, length, setPassButton) {

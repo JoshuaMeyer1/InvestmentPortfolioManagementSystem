@@ -22,7 +22,6 @@ $(document).ready(function() {
         if ($("#registerButton").hasClass('disabled')) return;
 
         $.ajax({
-            traditional: true,
             url: '/sign_up',
             type: 'POST',
             datatype: 'json',
@@ -31,9 +30,11 @@ $(document).ready(function() {
                 'password' : $('#password').val()
             },
             success: (data) => {
-                if (data.status === 'not in use')
-                    window.location.href = "userProfile.html?username=" + $("#username").val()
-                else
+                if (data.status === 'New user saved') {
+                    let username = $('#username').val()
+                    localStorage.setItem("IPMSUsername", username)
+                    window.location.href = 'userProfile.html?username=' + username
+                } else
                     $('#usernameInUse').html('This username is in use')
             }
         })
