@@ -67,12 +67,10 @@ body {
 
 .contentContainer h3 {
     padding-left: 2rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,garamond,serif;
 }
 
 .contentContainer h2 {
     padding: 0.25rem 2rem 0.3rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,garamond,serif;
     border-left: 6px solid green;
     background-color: #cfffd3;
 }

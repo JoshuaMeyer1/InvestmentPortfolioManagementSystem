@@ -15,6 +15,7 @@
 </head>
 
 <body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="module" src="../js/analysis.js"></script>
 <script type="module" src="../js/navigation.js"></script>
@@ -41,7 +42,7 @@
                 <span class="input-group-text">Table</span>
             </div>
 
-            <div class="dropdown">
+            <div class="input-group-append">
                 <button class="btn btn-outline-light dropdown-toggle" id="metricSelectionButton" type="button" data-toggle="dropdown">
                     Metric
                 </button>
@@ -53,22 +54,13 @@
                 </div>
             </div>
 
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown button
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </div>
-
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-lg">Duration</span>
             </div>
             <div class="input-group-append">
-                <button id="timeSelection" class="btn btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown">Time Period</button>
+                <button id="timeSelection" class="btn btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown">
+                    Time Period
+                </button>
                 <div class="dropdown-menu">
                     <a id="3months" class="dropdown-item" href="#">3 Months</a>
                     <a id="6months" class="dropdown-item" href="#">6 Months</a>
