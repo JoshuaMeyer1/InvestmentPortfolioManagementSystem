@@ -1,44 +1,339 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <meta charset="UTF-8">
 
 <head>
     <title>IPMS</title>
-    <link rel="icon" href="../styles/logo.svg" type="image/icon type">
+
     <link rel="stylesheet" href="../styles/styles.css">
-    <link rel="stylesheet" href="../styles/analysis.css">
-    <!-- bootstrap -->
+    <link rel="icon" href="../styles/logo.svg" type="image/icon type">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <script>
+        var tablesDict = [];
+        // var myChart = document.getElementById('myChart').getContext('2d');
+        /*
+        var myChart = document.getElementById('myChart').getContext('2d');
+        var metricChart = new Chart(myChart, {
+            type: 'line', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+            data: {
+                labels: [],
+                datasets: [{
+                    label: [],
+                    data: []
+                }]
+            },
+            options: {}
+        });
+        */
+
+        function xDaysAgo(days, date = new Date()) {
+            const daysAgo = new Date(date.getTime());
+
+            daysAgo.setDate(date.getDate() - days);
+
+            return daysAgo;
+        }
+
+        function toISO (date = new Date()) {
+            return date.getUTCFullYear() + "-" + pad(date.getUTCMonth() + 1) + '-' + pad(date.getUTCDate());
+        }
+
+        function pad(number) {
+            var r = String(number);
+            if (r.length === 1) {
+                r = '0' + r;
+            }
+            return r;
+        }
+
+
+        function updateChart(metric, timePeriod) {
+            var chartDiv= document.getElementById('chartDiv');
+            chartDiv.innerHTML = '';
+            console.log(chartDiv.innerHTML)
+            chartDiv.innerHTML += '<canvas id="myChart"></canvas>';
+            console.log(chartDiv.innerHTML)
+
+
+            var myChart = document.getElementById('myChart').getContext('2d');
+
+
+            console.log(metric)
+            console.log(timePeriod)
+
+            var labels = [];
+            var data = [];
+            var currentDate = new Date();
+            currentDate.setDate(currentDate.getDate() - 1);
+            console.log(toISO(currentDate))
+            console.log(toISO(xDaysAgo(90, currentDate)))
+
+            // handle time periods
+            if (timePeriod == "3 Months") {
+                for (i = 90; i >= 0; i-=5) {
+                    labels.push(toISO(xDaysAgo(i, currentDate)));
+                    data.push(0);
+                }
+            }
+
+            if (timePeriod == "6 Months") {
+                for (i = 180; i >= 0; i-=10) {
+                    labels.push(toISO(xDaysAgo(i, currentDate)));
+                    data.push(0);
+                }
+            }
+
+            if (timePeriod == "1 Year") {
+                for (i = 360; i >= 0; i-=20) {
+                    labels.push(toISO(xDaysAgo(i, currentDate)));
+                    data.push(0);
+                }
+            }
+
+            console.log(labels);
+
+            // handle metrics
+
+            for (let i = 0; i < tablesDict.length; i++) {
+                // var stockDate = new Date(tablesDict[i]['buyDate'])
+                // var currDate = new Date(labels[j])
+                // console.log(stockDate)
+                // console.log(currDate)
+                var companyPrices = getPrice(tablesDict[i]['stockName'], i).then(response => {
+
+                    return response;
+                }).then(response => {
+                    for (j = 0; j < labels.length; j++) {
+                        if (response[1]['Time Series (Daily)'][labels[j]] != undefined) {
+                            var currentDate = new Date(tablesDict[response[2]]['buyDate']);
+                            if (response[1]['Time Series (Daily)'][tablesDict[response[2]]['buyDate']] == undefined) {
+                                currentDate.setDate(currentDate.getDate() - 3)
+                            }
+                            console.log(response[1])
+                            if (metric == "Returns" || metric == "Sortino Ratio" || "Sharpe Ratio") {
+                                data[j] += tablesDict[i]['stockExchange'] * ((response[1]['Time Series (Daily)'][labels[j]]['5. adjusted close']) - (response[1]['Time Series (Daily)'][toISO(currentDate)]['5. adjusted close']));
+                            }
+                            if (metric == "Total Value") {
+                                data[j] += tablesDict[i]['stockExchange'] * ((response[1]['Time Series (Daily)'][labels[j]]['5. adjusted close']));
+                            }
+                        } else {
+                            var currentDate = new Date(tablesDict[response[2]]['buyDate']);
+                            if (response[1]['Time Series (Daily)'][tablesDict[response[2]]['buyDate']] == undefined) {
+                                currentDate.setDate(currentDate.getDate() - 2)
+                            }
+
+                            var labelDate = new Date(labels[j]);
+                            labelDate.setDate(labelDate.getDate() - 3)
+
+                            if (metric == "Returns" || metric == "Sortino Ratio" || "Sharpe Ratio") {
+                                data[j] += tablesDict[i]['stockExchange'] * ((response[1]['Time Series (Daily)'][toISO(labelDate)]['5. adjusted close']) - (response[1]['Time Series (Daily)'][toISO(currentDate)]['5. adjusted close']));
+                            }
+                            if (metric == "Total Value") {
+                                data[j] += tablesDict[i]['stockExchange'] * ((response[1]['Time Series (Daily)'][toISO(labelDate)]['5. adjusted close']));
+                            }
+                        }
+                    }
+                    return (data)
+                }).then(response => {
+                    for (k = 0; k < data.length; k++) {
+                        if (data[k] == 0) {
+                            if (k == 0) {
+                                data[k] = data[k + 1]
+                            } else {
+                                data[k] = data[k - 1]
+                            }
+                        }
+                    }
+                    console.log(metricChart)
+
+                    if (metric == "Sortino Ratio") {
+                        var sortinoRatio = 0;
+                        var downsideDeviation = 0;
+                        var minReturn = prompt("Enter your min returns rate: ");
+                        var sumNeg = 0
+                        for (p = 0; p < data.length; p++) {
+                            let returnRate = (data[p] - data[0]) / data[0]
+                            if (returnRate < minReturn) {
+                                sumNeg += (minReturn - returnRate) * (minReturn - returnRate)
+                            }
+                        }
+                        var downsideVariance = sumNeg / 19
+                        var downsideDeviation = Math.sqrt(downsideVariance)
+                        console.log(downsideDeviation)
+                        console.log(data[18])
+                        let recentRate = (data[18] - data[0]) / data[0]
+                        sortinoRatio = (recentRate - minReturn) / (downsideDeviation)
+                        alert("The sortino ratio of the portfolio is " + sortinoRatio)
+                    }
+
+                    if (metric == "Sharpe Ratio") {
+                        alert("test")
+                    }
+
+
+                    var metricChart = new Chart(myChart, {
+                        type: 'line', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: metric,
+                                data: response
+                            }]
+                        },
+                        options: {}
+                    });
+
+
+                    console.log(labels)
+                    console.log(response)
+                    metricChart.data.labels = labels;
+                    metricChart.data.datasets.data = response;
+                    metricChart.data.datasets.label = metric;
+                    console.log(metricChart);
+                    metricChart.update();
+
+                })
+                // var boughtPrice = (data['Time Series (Daily)'][dateB]['2. high']);
+                // var currPrice = (data['Time Series (Daily)'][dateC]['2. high']);
+
+
+            }
+
+        }
+
+
+
+        function getParameter (parameterName) {
+            let parameters = new URLSearchParams(window.location.search);
+            return parameters.get(parameterName);
+        }
+
+
+
+        function updateTable() {
+            var listTable = document.getElementById("stockTable");
+            listTable.innerHTML = '';
+            for (var i = 0; i < tablesDict.length; i++) {
+                listTable.innerHTML += '<tr><th scope="row">' + String(i) + '</th><td>' + String(tablesDict[i]["stockName"]) + '</td><td>' + String(tablesDict[i]["stockExchange"]) + '</td><td>' + String(tablesDict[i]["buyDate"]) + '</td></tr>';
+            }
+        }
+
+
+
+        function removeStock(index) {
+            tablesDict.splice(index, 1);
+            updateTable();
+        }
+
+
+        function submitStock() {
+            var stockName = document.getElementById("stockName").value;
+            var stockExchange = document.getElementById("stockExchange").value;
+            var buyDate = document.getElementById("buyDate").value;
+
+            tablesDict.push({
+                'stockName': stockName,
+                'stockExchange': stockExchange,
+                'buyDate': buyDate
+            });
+
+
+            console.log(tablesDict);
+            updateTable();
+        }
+
+        function getPrice(stockName, index) {
+            var data = {
+                name: stockName,
+            }
+
+            var stockPrice = fetch("/stockPrice", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                return response.json()
+            }).then(data => {
+                if (data.status == "failed") {
+                    return [0, stockName, date, index]
+                } else {
+                    return [1, data.data, index]
+                }
+            })
+            return stockPrice;
+        }
+
+        function listTable() {
+            var currUsername = getParameter("username");
+
+            var data = {
+                username: currUsername
+            }
+
+            var stocks = fetch("/initialStock", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                return response.json()
+            }).then(data => {
+                console.log(data.status);
+                console.log(data.portfolio);
+                console.log(tablesDict);
+
+                for (i = 0; i < data.portfolio.length; i++) {
+                    tablesDict.push({
+                        'stockName': data.portfolio[i][0],
+                        'stockExchange': data.portfolio[i][1],
+                        'buyDate': data.portfolio[i][2]
+                    });
+                    console.log(tablesDict);
+
+                }
+                updateTable();
+                // updateChart('Returns', '3 Months');
+            })
+
+        }
+
+        function metricSelection(metric) {
+            currMetric = metric;
+            document.getElementById('metricSelection').innerHTML = currMetric;
+        }
+
+        function intervalSelection(interval) {
+            currTimePeriod = interval;
+            document.getElementById('timeSelection').innerHTML = currTimePeriod;
+        }
+
+        function calculateMetric() {
+
+            var metric = document.getElementById('metricSelection').innerHTML;
+            var interval = document.getElementById('timeSelection').innerHTML;
+
+            if (metric == "Metric" || interval == "Time Period") {
+                alert("Please select parameters!");
+            } else {
+                updateChart(metric, interval);
+            }
+
+        }
+
+    </script>
 </head>
+
 <body onload="listTable()">
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-<script src="../js/mainScript.js"></script>
-<script src="../js/analysis.js"></script>
+<script type="module" src="../js/navigation.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+
 <div class="navigation">
-    <ul>
-        <li>
-            <a href="#" style="padding-left:0">
-                <object data="../styles/logo.svg" width="200" height="200"></object>
-            </a>
-        </li>
-        <li>
-            <a href="userProfile.html" style="color: #a8a8a8">
-                <span class="linkText">User Profile</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                <span class="linkText">Portfolio</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="portfolioAnalysis.html" style="color: #a8a8a8">
-                <span class="linkText">Portfolio Analysis</span>
-            </a>
-        </li>
-    </ul>
 </div>
 
 <div class="header">
@@ -47,6 +342,9 @@
     </h2>
 </div>
 
+<div class="container" id="chartDiv">
+    <canvas id="myChart"></canvas>
+</div>
 
 <div class="contentContainer">
     <div id="dataSelectionContent">
@@ -55,39 +353,32 @@
                 <span class="input-group-text">Table</span>
             </div>
             <div class="input-group-append">
-                <button id="metricSelection" class="btn btn-outline-secondary dropdown-toggle" type="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Metric
-                </button>
+                <button id="metricSelection" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Metric</button>
                 <div class="dropdown-menu" id="tableSelectionDiv">
 
-                    <a class="dropdown-item" href="#" onclick="metricSelection('Dividends')">Dividends</a>
-                    <a class="dropdown-item" href="#" onclick="metricSelection('Standard Deviation')">Standard
-                        Deviation</a>
+                    <a class="dropdown-item" href="#" onclick="metricSelection('Returns')">Returns</a>
+                    <a class="dropdown-item" href="#" onclick="metricSelection('Total Value')">Total Value</a>
                     <a class="dropdown-item" href="#" onclick="metricSelection('Sortino Ratio')">Sortino Ratio</a>
+                    <a class="dropdown-item" href="#" onclick="metricSelection('Sharpe Ratio')">Sharpe Ratio</a>
 
                 </div>
             </div>
             <!-- <input type="text" class="form-control" placeholder="Field1, Field2, Field3..."> -->
             <div class="input-group-prepend">
-                <span class="input-group-text">Duration</span>
+                <span class="input-group-text" id="inputGroup-sizing-lg">Duration</span>
             </div>
             <div class="input-group-append">
-                <button id="timeSelection" class="btn btn-outline-secondary dropdown-toggle" type="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Time Period
-                </button>
+                <button id="timeSelection" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Time Period</button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" onclick="intervalSelection('3 months')">3 Months</a>
-                    <a class="dropdown-item" href="#" onclick="intervalSelection('6 months')">6 Months</a>
-                    <a class="dropdown-item" href="#" onclick="intervalSelection('1 year')">1 Year</a>
+                    <a class="dropdown-item" href="#" onclick="intervalSelection('3 Months')">3 Months</a>
+                    <a class="dropdown-item" href="#" onclick="intervalSelection('6 Months')">6 Months</a>
+                    <a class="dropdown-item" href="#" onclick="intervalSelection('1 Year')">1 Year</a>
                 </div>
             </div>
-            <button onclick="calculateMetric()" style="border-radius: 0px;" class="btn btn-outline-secondary"
-                    type="button">Calculate Metric
-            </button>
+            <button onclick="calculateMetric()" style="border-radius: 0px;"class="btn btn-outline-secondary" type="button">Calculate Metric</button>
         </div>
     </div>
 </div>
-
 
 <div class="contentContainer">
     <div id="stockPortfolio">
@@ -96,11 +387,11 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Stock</th>
-                <th scope="col">Stock Exchange</th>
+                <th scope="col">Quantity</th>
                 <th scope="col">Buy Date</th>
             </tr>
             </thead>
-            <tbody id="stockTable">
+            <tbody id = "stockTable">
 
             <!--
             <tr>

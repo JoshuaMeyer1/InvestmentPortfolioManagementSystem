@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -99,14 +98,12 @@ body {
 }
 
 #submitButtonParameters {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,garamond,serif;
     height: 1.8rem;
     background-color: rgb(29, 126, 126);
     margin: 0.5rem;
 }
 
 .parameterText {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,garamond,serif;
     font-weight: bold;
     color: rgb(29, 126, 126);
 }
@@ -152,4 +149,16 @@ body {
     cursor: pointer;
     margin-top: 10px;
     width: 250px;
+}
+
+#stockTable th {
+    text-align: center;
+    vertical-align: bottom;
+    color: white;
+}
+
+#stockTable td {
+    text-align: center;
+    vertical-align: bottom;
+    color: white;
 }

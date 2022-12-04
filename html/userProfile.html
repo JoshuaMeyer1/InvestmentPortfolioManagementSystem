@@ -4,45 +4,28 @@
 
 <head>
     <title>IPMS</title>
+
     <link rel="icon" href="../styles/logo.svg" type="image/icon type">
     <link rel="stylesheet" href="../styles/styles.css">
-    <link rel="stylesheet" href="../styles/passwordValidation.css">
-    <!-- boostrap -->
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="../styles/passwordValidation.css">
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-<script type="module" src="../js/mainScript.js"></script>
 <script type="module" src="../js/userProfile.js"></script>
-<!-- navigation bar -->
+<script type="module" src="../js/navigation.js"></script>
+<!-- navigation -->
 <div class="navigation">
-    <ul>
-        <li>
-            <a href="#" style="padding-left:0">
-                <object data="../styles/logo.svg" width="200" height="200"></object>
-            </a>
-        </li>
-        <li>
-            <a href="javascript:window.location.href = 'userProfile.html?username=' + localStorage.getItem('IPMSUsername')">
-                <span class="linkText">User Profile</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <span class="linkText">Portfolio</span>
-            </a>
-        </li>
-        <li>
-            <a href="javascript:window.location.href = 'portfolioAnalysis.html?username=' + getParameter('username')">
-                <span class="linkText">Portfolio Analysis</span>
-            </a>
-        </li>
-    </ul>
 </div>
+
 <!-- page header -->
 <div class="header">
     <h2>Profile Settings</h2>
 </div>
+
 <!--  database login form -->
 <div class="contentContainer">
     <div class="containerItem">

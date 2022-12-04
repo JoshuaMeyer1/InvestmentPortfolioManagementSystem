@@ -4,122 +4,68 @@
 
 <head>
     <title>IPMS</title>
+
+    <link rel="stylesheet" href="../styles/styles.css">
     <link rel="icon" href="../styles/logo.svg" type="image/icon type">
-    <link rel="stylesheet" href="../styles/styles.css" />
-    <link rel="stylesheet" href="../styles/portfolio.css"/>
-    <!-- bootstrap -->
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="../styles/passwordValidation.css">
 </head>
 
 <body>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-<script type="module" src="../js/mainScript.js"></script>
 <script type="module" src="../js/portfolio.js"></script>
-    <div class="navigation">
-        <ul>
-            <li>
-                <a href="#" style="padding-left:0">
-                    <object data="../styles/logo.svg" width="200" height="200"></object>
-                </a>
-            </li>
-            <li>
-                <a href="userProfile.html" style="color: #a8a8a8">
-                    <span class="linkText">User Profile</span>
-                </a>
-            </li>
+<script type="module" src="../js/navigation.js"></script>
+<!-- navigation -->
+<div class="navigation">
+</div>
+<!-- page header -->
+<div class="header">
+    <h2>Portfolio</h2>
+</div>
 
-            <li>
-                <a href="#">
-                    <span class="linkText">Portfolio</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="portfolioAnalysis.html" style="color: #a8a8a8">
-                    <span class="linkText">Portfolio Analysis</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="header">
-        <h2 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, garamond,serif;">
-            Data Selection
-        </h2>
-    </div>
-
-    <div class="contentContainer">
-        <div id="dataSelectionContent">
-            <div id="parameterSelection" class="input-group input-group-lg">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Stock</span>
-                </div>
-                <label for="stockName"></label><input type="text" class="form-control" id="stockName" placeholder="ex. TSLA, AMZA, AAPL" />
-
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Stock Exchange</span>
-                </div>
-                <label for="stockExchange"></label><input type="text" class="form-control" id="stockExchange" placeholder="ex. NASDAQ, NYSE" />
-
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Buy Date</span>
-                </div>
-                <label for="buyDate"></label><input type="text" class="form-control" id="buyDate" placeholder="MM/DD/YYYY" />
-
-                <button id="submitStockButton" style="border-radius: 0" class="btn btn-outline-secondary"
-                    type="button">
-                    Add Stock
-                </button>
+<div class="contentContainer">
+    <div id="dataSelectionContent">
+        <div id="parameterSelection" class="input-group input-group-lg">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Stock</span>
             </div>
+            <label for="stockName"></label><input type="text" class="form-control" id="stockName" placeholder="ex. TSLA, AMZA, AAPL" />
+
+            <div class="input-group-prepend" style="padding-left:10px">
+                <span class="input-group-text">Quantity</span>
+            </div>
+            <label for="stockExchange"></label><input type="text" class="form-control" id="stockExchange" placeholder="Exe. 1, 2, 200" />
+
+            <div class="input-group-prepend" style="padding-left:10px">
+                <span class="input-group-text">Buy Date</span>
+            </div>
+            <label for="buyDate"></label><input type="text" class="form-control" id="buyDate" placeholder="YYYY-MM-DD"/>
         </div>
+        <div class="text-center"><button id="submitStockButton" class="btn btn-outline-light" type="button">Add Stock</button></div>
     </div>
+</div>
 
-    <div class="contentContainer">
-        <div id="stockPortfolio">
-            <table class="table">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col">Stock Exchange</th>
-                        <th scope="col">Buy Date</th>
-                        <th scope="col">Remove</th>
-                    </tr>
-                </thead>
-                <tbody id = "stockTable">
+<div class="contentContainer">
+    <div id="stockPortfolio">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Buy Date</th>
+                <th scope="col">Remove</th>
+            </tr>
+            </thead>
+            <tbody id="stockTable">
 
-                    <!--
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>
-                            <button onclick="removeStock(' + i + ')" style="border-radius: 0px" class="btn btn-outline-secondary"
-                            type="button">
-                                RemoveStock
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
-                    -->
-
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
+</div>
 </body>
 
 </html>
-

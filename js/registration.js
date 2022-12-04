@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(() => {
 
     // When the username input is edited, update the password validation box.
     $("#username").on("input", () => {
@@ -29,8 +29,8 @@ $(document).ready(function() {
                 'username' : $('#username').val(),
                 'password' : $('#password').val()
             },
-            success: (data) => {
-                if (data.status === 'New user saved') {
+            success: (res) => {
+                if (res.status === 'New user saved') {
                     let username = $('#username').val()
                     localStorage.setItem("IPMSUsername", username)
                     window.location.href = 'userProfile.html?username=' + username
