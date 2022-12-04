@@ -9,7 +9,6 @@ $(document).ready(() => {
             username: localStorage.getItem('IPMSUsername')
         },
         success: (res) => {
-            console.log(res)
             tablesDict = res
             populateTable()
         }
@@ -39,22 +38,6 @@ $(document).ready(() => {
     })
 })
 
-function removeStock(index) {
-    $.ajax({
-        url: '/remove_stock',
-        type: 'POST',
-        datatype: 'json',
-        data: {
-            username: localStorage.getItem("IPMSUsername"),
-            stock: tablesDict[index]
-        },
-        success: () => {
-            tablesDict.splice(index, 1)
-            populateTable()
-        }
-    })
-}
-
 function populateTable() {
     let stockTable = $('#stockTable')
     stockTable.html('')
@@ -68,6 +51,20 @@ function populateTable() {
             `<td><button id='removeStockButton${index}' class="btn btn-outline-danger" type="button">Remove</button></td>` +
             `</tr>`
         )
-        $('#removeStockButton' + index).click(() => removeStock(index))
+        $('#removeStockButton' + index).click(() => {
+            $.ajax({
+                url: '/remove_stock',
+                type: 'POST',
+                datatype: 'json',
+                data: {
+                    username: localStorage.getItem("IPMSUsername"),
+                    stock: tablesDict[index]
+                },
+                success: () => {
+                    tablesDict.splice(index, 1)
+                    populateTable()
+                }
+            })
+        })
     })
 }

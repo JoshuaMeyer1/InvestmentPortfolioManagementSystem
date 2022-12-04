@@ -7,6 +7,9 @@ const app = express()
 const bodyParser = require("body-parser")
 const port = 8080
 
+const request = require('request')
+
+
 app.use(bodyParser.json())
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended:true}))
@@ -52,7 +55,6 @@ app.post("/set_username", (req, res) => {
         if (data) return res.json({ status: "Username is in use" })
         else userModel.findOneAndUpdate(updateFilter, update, null, () => res.json({ status: "Username updated" }))
     })
-
 })
 
 app.post("/set_password", (req, res) => {
@@ -89,4 +91,23 @@ app.post("/remove_stock", (req, res) => {
     userModel.updateOne(filter, update, null, () => {})
 
     return res.json({ status: 'Stock removed' })
+})
+
+app.post("/stock_price", (req, res) => {
+    request.get({
+        url: 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=' + req.body.name + '&interval=5min&outputsize=full&apikey=5K16DMHFHM4UDTCH',
+        json: true,
+        headers: {'User-Agent': 'request'}
+    }, (err, result, data) => {
+        if (data === undefined)
+            return res.json({
+                status: 'failed',
+                date: data
+            })
+        else
+            return res.json({
+                status: 'success',
+                data: data
+            })
+    })
 })

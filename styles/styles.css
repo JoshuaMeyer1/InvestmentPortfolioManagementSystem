@@ -162,3 +162,7 @@ body {
     vertical-align: bottom;
     color: white;
 }
+
+.show {
+    display:block;
+}
