@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const app = express();
+var request = require('request');
+var yF = require("yahoo-finance");
+
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
@@ -115,6 +118,36 @@ app.post("/initialStock", (req, res) => {
     })
 })
 
+app.post("/stockPrice", (req, res) => {
+    var url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=' + req.body.name + '&interval=5min&outputsize=full&apikey=5K16DMHFHM4UDTCH';
+    request.get({
+        url: url,
+        json: true,
+        headers: {'User-Agent': 'request'}
+    }, (err, result, data) => {
+        if (err) {
+            console.log('Error:', err);
+        } else if (result.statusCode !== 200) {
+            console.log('Status:', result.statusCode);
+        } else {
+        // data is successfully parsed as a JSON object:
+            // var price = (data['Time Series (Daily)'][req.body.stockdate]['2. high']);
+            if (data == undefined) {
+                return res.json({
+                    status: 'failed',
+                    date: data
+                })
+            } else {
+                return res.json({
+                    status: 'success',
+                    data: data
+                })
+            }
+        }
+    })
+    
+})
+
 app.post("/removeStock", (req, res) => {
     var test = User.find((err, data) => {
         if (err) {
@@ -123,8 +156,8 @@ app.post("/removeStock", (req, res) => {
             for (i = 0; i < data.length; i++) {
                 if (data[i].uname == req.body.username) {
                     var portfolio = data[i].port;
-                    console.log(portfolio)
-                    console.log(req.body)
+                    // console.log(portfolio)
+                    // console.log(req.body)
 
                     for (j = 0; j < portfolio.length; j++) {
                         if (portfolio[j][0] == req.body.stock && portfolio[j][1] == req.body.exchange && portfolio[j][2] == req.body.date) {
@@ -213,30 +246,5 @@ app.post("/userProfileChange", (req, res) => {
     
 
 
-// validate the database information
-function validateDBInformation(name, password, oldPassword) {
-    if (oldPassword == "s") {
-        if (name != "") {
-            updateUsername(name);
-        }
-        
-        if (password != "") {
-            updatePassword(password);
-        }
-        return true;
-    } else {
-        return false;
-    }
-}
-
-// function to update the database username
-function updateUsername(name) {
-    console.log(name);
-}
-
-// function to update the database password
-function updatePassword(password) {
-    console.log(password);
-}
 
 
