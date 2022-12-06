@@ -83,8 +83,8 @@
             var data = [];
             var currentDate = new Date();
             currentDate.setDate(currentDate.getDate() - 1);
-            console.log(toISO(currentDate))
-            console.log(toISO(xDaysAgo(90, currentDate)))
+            // console.log(toISO(currentDate))
+            // console.log(toISO(xDaysAgo(90, currentDate)))
 
             // handle time periods
             if (timePeriod == "3 Months") {
@@ -108,7 +108,7 @@
                 }
             }
 
-            console.log(labels);
+            // console.log(labels);
 
             // handle metrics
             
@@ -125,9 +125,11 @@
                         if (response[1]['Time Series (Daily)'][labels[j]] != undefined) {
                             var currentDate = new Date(tablesDict[response[2]]['buyDate']);
                             if (response[1]['Time Series (Daily)'][tablesDict[response[2]]['buyDate']] == undefined) {
-                                currentDate.setDate(currentDate.getDate() - 3)
+                                while (response[1]['Time Series (Daily)'][toISO(currentDate)] == undefined) {
+                                    currentDate.setDate(currentDate.getDate() - 1)
+                                }
                             }
-                            console.log(response[1])
+                            // console.log(response[1])
                             if (metric == "Returns" || metric == "Sortino Ratio" || "Sharpe Ratio") {
                                 data[j] += tablesDict[i]['stockExchange'] * ((response[1]['Time Series (Daily)'][labels[j]]['5. adjusted close']) - (response[1]['Time Series (Daily)'][toISO(currentDate)]['5. adjusted close']));
                             }
@@ -137,13 +139,20 @@
                         } else {
                             var currentDate = new Date(tablesDict[response[2]]['buyDate']);
                             if (response[1]['Time Series (Daily)'][tablesDict[response[2]]['buyDate']] == undefined) {
-                                currentDate.setDate(currentDate.getDate() - 2)
+                                while (response[1]['Time Series (Daily)'][toISO(currentDate)] == undefined) {
+                                    currentDate.setDate(currentDate.getDate() - 1)
+                                }
                             }
-
                             var labelDate = new Date(labels[j]);
-                            labelDate.setDate(labelDate.getDate() - 3)
+                            console.log(labelDate)
+                            while (((response[1]['Time Series (Daily)'][toISO(labelDate)])) == undefined) {
+                                labelDate.setDate(labelDate.getDate() - 2)
+                            }
+                            console.log(labelDate)
+                            console.log(tablesDict[i]['stockExchange'] * ((response[1]['Time Series (Daily)'][toISO(labelDate)]['5. adjusted close'])))
 
                             if (metric == "Returns" || metric == "Sortino Ratio" || "Sharpe Ratio") {
+                                
                                 data[j] += tablesDict[i]['stockExchange'] * ((response[1]['Time Series (Daily)'][toISO(labelDate)]['5. adjusted close']) - (response[1]['Time Series (Daily)'][toISO(currentDate)]['5. adjusted close']));
                             }
                             if (metric == "Total Value") {
@@ -175,17 +184,50 @@
                                 sumNeg += (minReturn - returnRate) * (minReturn - returnRate)
                             }
                         }
+                        console.log(sumNeg)
                         var downsideVariance = sumNeg / 19
                         var downsideDeviation = Math.sqrt(downsideVariance)
                         console.log(downsideDeviation)
                         console.log(data[18])
                         let recentRate = (data[18] - data[0]) / data[0]
+                        console.log(recentRate)
                         sortinoRatio = (recentRate - minReturn) / (downsideDeviation)
-                        alert("The sortino ratio of the portfolio is " + sortinoRatio)
+                        alert("The sortino ratio of the portfolio is " + sortinoRatio);
                     }
 
+
+
                     if (metric == "Sharpe Ratio") {
-                        alert("test")
+                        var sharpeRatio = 0;
+                        var standardDeviation = 0;
+                        var sum = 0;
+                        var sumSquared = 0;
+                        for (p = 0; p < data.length; p++) {
+                            let returnRate = (data[p] - data[0]) / data[0]
+                            sum += returnRate;
+                            sumSquared += returnRate * returnRate;
+                        }
+                        let meanReturn = sum / data.length;
+                        standardDeviation = Math.sqrt(sumSquared / 19)
+
+                        sharpeRatio = meanReturn / standardDeviation;
+                        alert("The sharpe ratio of the portfolio is " + sharpeRatio);
+                    }
+
+                    if (metric == "Standard Deviation") {
+                        var standardDeviation = 0;
+                        var sumSquared = 0;
+                        for (p = 0; p < data.length; p++) {
+                            let returnRate = (data[p] - data[0]) / data[0]
+                            sumSquared += returnRate * returnRate;
+                        }
+                        standardDeviation = Math.sqrt(sumSquared / 19)
+                        alert("The standard deviation of the portfolio is " + standardDeviation)
+                    }
+
+                    
+                    if (metric == "R Squared") {
+                        
                     }
                     
 
@@ -349,7 +391,7 @@
         <ul>
             <li>
                 <a href="#" style="padding-left: 0rem">
-                    <img src="samplelogo.png" width="200" height="200" alt="Logo" />
+                    <img src="logo.svg" width="200" height="200" alt="Logo" />
                 </a>
             </li>
             <li>
@@ -403,6 +445,8 @@
                         <a class="dropdown-item" href="#" onclick="metricSelection('Total Value')">Total Value</a>
                         <a class="dropdown-item" href="#" onclick="metricSelection('Sortino Ratio')">Sortino Ratio</a>
                         <a class="dropdown-item" href="#" onclick="metricSelection('Sharpe Ratio')">Sharpe Ratio</a>
+                        <a class="dropdown-item" href="#" onclick="metricSelection('Standard Deviation')">Standard Deviation</a>
+                        <a class="dropdown-item" href="#" onclick="metricSelection('Standard Deviation')">R Squared</a>
 
                     </div>
                 </div>
