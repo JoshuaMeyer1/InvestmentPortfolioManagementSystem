@@ -1,16 +1,49 @@
 let tablesDict = []
-let currTimePeriod = '3 months'
-let currMetric = 'Returns'
+let currTimePeriod
+let currMetric
 
 $(document).ready(() => {
-    $("#metricSelRet").click(() => metricSelection('Returns'))
-    $("#metricSelTotalVal").click(() => metricSelection('Total Value'))
-    $("#metricSelSortinoRat").click(() => metricSelection('Sortino Ratio'))
-    $("#metricSelSharpeRat").click(() => metricSelection('Sharpe Ratio'))
-    $("#calculateMetricButton").click(() => calculateMetric())
-    $("#3months").click(() => intervalSelection("3 months"))
-    $("#6months").click(() => intervalSelection("6 months"))
-    $("#1year").click(() => intervalSelection("1 year"))
+    $("#metricSelRet").click(() => {
+        currMetric = 'Returns'
+        $('#metricSelection').html(currMetric)
+    })
+    $("#metricSelTotalVal").click(() => {
+        currMetric = 'Total Value'
+        $('#metricSelection').html(currMetric)
+    })
+    $("#metricSelSortinoRat").click(() => {
+        currMetric = 'Sortino Ratio'
+        $('#metricSelection').html(currMetric)
+    })
+    $("#metricSelSharpeRat").click(() => {
+        currMetric = 'Sharpe Ratio'
+        $('#metricSelection').html(currMetric)
+    })
+    $("#metricSelStdDev").click(() => {
+        currMetric = 'Sharpe Ratio'
+        $('#metricSelection').html(currMetric)
+    })
+    $("#metricSelRSq").click(() => {
+        currMetric = 'R Squared'
+        $('#metricSelection').html(currMetric)
+    })
+    $("#calculateMetricButton").click(() => {
+        if (currTimePeriod && currMetric)
+            updateChart()
+        else alert("Please select parameters")
+    })
+    $("#3months").click(() => {
+        currTimePeriod = '3 Months'
+        $('#timeSelection').html(currTimePeriod)
+    })
+    $("#6months").click(() => {
+        currTimePeriod = '6 Months'
+        $('#timeSelection').html(currTimePeriod)
+    })
+    $("#1year").click(() => {
+        currTimePeriod = '1 Year'
+        $('#timeSelection').html(currTimePeriod)
+    })
 
     $.ajax({
         url: '/initialize_stocks',
@@ -19,152 +52,12 @@ $(document).ready(() => {
         data: {
             username: localStorage.getItem('IPMSUsername')
         },
-        success: (res) => {
+        success: res => {
             tablesDict = res
             populateTable()
         }
     })
 })
-
-function xDaysAgo(days, date = new Date()) {
-    return new Date(date.getTime() - days)
-}
-
-function toISO(date = new Date()) {
-    return date.getUTCFullYear() + "-" +
-        pad(date.getUTCMonth() + 1) + '-'
-        + pad(date.getUTCDate());
-}
-
-function pad(number) {
-    let r = String(number);
-    if (r.length === 1)
-        r = '0' + r;
-    return r;
-}
-
-function updateChart(metric, timePeriod) {
-    let chartDiv= document.getElementById('chartDiv');
-    chartDiv.innerHTML = '';
-    chartDiv.innerHTML += '<canvas id="myChart"></canvas>';
-
-    let myChart = $('#myChart').getContext('2d');
-    let labels = [];
-    let data = [];
-    let currentDate = new Date();
-    currentDate.setDate(currentDate.getDate() - 1);
-
-    // handle time periods
-    if (timePeriod === "3 Months")
-        for (let i = 90; i >= 0; i-=5) {
-            labels.push(toISO(xDaysAgo(i, currentDate)));
-            data.push(0);
-        }
-    else if (timePeriod === "6 Months")
-        for (let i = 180; i >= 0; i-=10) {
-            labels.push(toISO(xDaysAgo(i, currentDate)));
-            data.push(0);
-        }
-    else if (timePeriod === "1 Year")
-        for (let i = 360; i >= 0; i-=20) {
-            labels.push(toISO(xDaysAgo(i, currentDate)));
-            data.push(0);
-        }
-
-    // handle metrics
-
-    for (let i = 0; i < tablesDict.length; i++) {
-        let companyPrices = getPrice(tablesDict[i]['stockName'], i).then((response) => {
-            return response;
-        }).then(response => {
-            for (let j = 0; j < labels.length; j++) {
-                if (response[1]['Time Series (Daily)'][labels[j]] !== undefined) {
-                    let currentDate = new Date(tablesDict[response[2]]['buyDate']);
-                    if (response[1]['Time Series (Daily)'][tablesDict[response[2]]['buyDate']] === undefined) {
-                        currentDate.setDate(currentDate.getDate() - 3)
-                    }
-                    console.log(response[1])
-                    if (metric === "Returns" || metric === "Sortino Ratio" || "Sharpe Ratio") {
-                        data[j] += tablesDict[i]['stockExchange'] * ((response[1]['Time Series (Daily)'][labels[j]]['5. adjusted close']) - (response[1]['Time Series (Daily)'][toISO(currentDate)]['5. adjusted close']));
-                    }
-                    if (metric === "Total Value") {
-                        data[j] += tablesDict[i]['stockExchange'] * ((response[1]['Time Series (Daily)'][labels[j]]['5. adjusted close']));
-                    }
-                } else {
-                    let currentDate = new Date(tablesDict[response[2]]['buyDate']);
-                    if (response[1]['Time Series (Daily)'][tablesDict[response[2]]['buyDate']] === undefined) {
-                        currentDate.setDate(currentDate.getDate() - 2)
-                    }
-
-                    let labelDate = new Date(labels[j]);
-                    labelDate.setDate(labelDate.getDate() - 3)
-
-                    if (metric === "Returns" || metric === "Sortino Ratio" || "Sharpe Ratio") {
-                        data[j] += tablesDict[i]['stockExchange'] * ((response[1]['Time Series (Daily)'][toISO(labelDate)]['5. adjusted close']) - (response[1]['Time Series (Daily)'][toISO(currentDate)]['5. adjusted close']));
-                    }
-                    if (metric === "Total Value") {
-                        data[j] += tablesDict[i]['stockExchange'] * ((response[1]['Time Series (Daily)'][toISO(labelDate)]['5. adjusted close']));
-                    }
-                }
-            }
-            return (data)
-        }).then(response => {
-            for (let k = 0; k < data.length; k++) {
-                if (data[k] === 0) {
-                    if (k === 0) data[k] = data[k + 1]
-                    else data[k] = data[k - 1]
-                }
-            }
-            console.log(metricChart)
-
-            if (metric === "Sortino Ratio") {
-                let sortinoRatio = 0;
-                let minReturn = prompt("Enter your min returns rate: ");
-                let sumNeg = 0
-                for (let p = 0; p < data.length; p++) {
-                    let returnRate = (data[p] - data[0]) / data[0]
-                    if (returnRate < minReturn) {
-                        sumNeg += (minReturn - returnRate) * (minReturn - returnRate)
-                    }
-                }
-                let downsideVariance = sumNeg / 19
-                let downsideDeviation = Math.sqrt(downsideVariance)
-                console.log(downsideDeviation)
-                console.log(data[18])
-                let recentRate = (data[18] - data[0]) / data[0]
-                sortinoRatio = (recentRate - minReturn) / (downsideDeviation)
-                alert("The sortino ratio of the portfolio is " + sortinoRatio)
-            }
-
-            if (metric === "Sharpe Ratio")
-                alert("test")
-
-
-            let metricChart = new Chart(myChart, {
-                type: 'line', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: metric,
-                        data: response
-                    }]
-                },
-                options: {}
-            });
-
-
-            console.log(labels)
-            console.log(response)
-            metricChart.data.labels = labels;
-            metricChart.data.datasets.data = response;
-            metricChart.data.datasets.label = metric;
-            console.log(metricChart);
-            metricChart.update();
-
-        })
-    }
-
-}
 
 function populateTable() {
     let stockTable = $('#stockTable')
@@ -197,61 +90,180 @@ function populateTable() {
     })
 }
 
-function submitStock() {
-    let stock = {
-        stockName: $("#stockName").val(),
-        stockExchange: $("#stockExchange").val(),
-        buyDate: $("#buyDate").val()
+function toISO (date = new Date()) {
+    return date.getFullYear() + "-" + pad(date.getMonth() + 1) + '-' + pad(date.getDate())
+}
+
+function pad(number) {
+    let r = String(number)
+    if (r.length === 1)
+        return '0' + r
+    return r;
+}
+
+function updateChart() {
+    let chartExist = Chart.getChart("myChart")
+    if (chartExist)
+        chartExist.destroy()
+
+    let metricChart = new Chart(document.getElementById('myChart').getContext('2d'), {
+        type: 'line',
+        data: {},
+        options: {
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                    }
+                }],
+            },
+            responsive: true,
+            startsAtZero: true,
+            background: 'white'
+        }
+    })
+
+    // handle time periods
+    let i, inc
+    if (currTimePeriod === "3 Months") {
+        i = 90
+        inc = 5
     }
-    if (stock.stockName === "" || stock.stockExchange === "" || stock.buyDate === "") return
+    if (currTimePeriod === "6 Months") {
+        i = 180
+        inc = 10
+    }
+    if (currTimePeriod === "1 Year") {
+        i = 360
+        inc = 20
+    }
 
-    $.ajax({
-        url: '/submit_stock',
-        type: 'POST',
-        datatype: 'json',
-        data: {
-            username: localStorage.getItem("IPMSUsername"),
-            stock: stock
-        },
-        success: () => {
-            tablesDict.push(stock)
-            populateTable()
-        }
+    // key-value pairs of dates and data, for each individual stock
+    let data = {}
+    let calcs = {}
+    tablesDict.forEach(stock => data[stock.stockName] = {})
+    while (i >= 0) {
+        let iDaysAgo = new Date()
+        iDaysAgo.setDate(iDaysAgo.getDate() - i - 1)
+
+        // If the day is a weekend, we have to search to make it Friday
+        if (iDaysAgo.getDay() === 0) iDaysAgo.setDate(iDaysAgo.getDate() - 2) // 0 represents Sunday
+        if (iDaysAgo.getDay() === 6) iDaysAgo.setDate(iDaysAgo.getDate() - 1) // 6 represents Saturday
+
+        iDaysAgo = toISO(iDaysAgo)
+        tablesDict.forEach(stock => data[stock.stockName][iDaysAgo] = 0)
+        i -= inc
+    }
+
+    let xVals = [], yVals = {}
+    metricChart.data.labels = xVals
+
+    // handle metrics
+    tablesDict.forEach(stock => {
+        $.ajax({
+            url: '/stock_price',
+            type: 'POST',
+            datatype: 'json',
+            data: {
+                stockName: stock.stockName
+            },
+            success: res => {
+                for (let lookupDate in data[stock.stockName]) {
+                    if (res[lookupDate])
+                        data[stock.stockName][lookupDate] = res[lookupDate]
+                }
+
+                // Find the adjusted close for the buy date of the stock
+                let buyDate = new Date(stock.buyDate) // Assuming the buy date is from within 20 years ago
+
+                // If the day is a weekend, we have to make it Friday
+                if (buyDate.getDay() === 0) buyDate.setDate(buyDate.getDate() - 2) // 0 represents Sunday
+                if (buyDate.getDay() === 6) buyDate.setDate(buyDate.getDate() - 1) // 6 represents Saturday
+
+                let AdjCloseAtBuyDate = parseFloat(res[toISO(buyDate)]['5. adjusted close'])
+                if (currMetric === "Returns" || currMetric === "Sortino Ratio" || currMetric === "Sharpe Ratio") {
+                    for (let lookupDate in data[stock.stockName]) {
+                        if (!calcs[lookupDate]) calcs[lookupDate] = 0
+                        calcs[lookupDate] += parseInt(stock.stockExchange) * (parseFloat(data[stock.stockName][lookupDate]['5. adjusted close']) - AdjCloseAtBuyDate)
+                    }
+                } else if (currMetric === "Total Value") {
+                    for (let lookupDate in data[stock.stockName]) {
+                        if (!calcs[lookupDate]) calcs[lookupDate] = 0
+                        calcs[lookupDate] += parseInt(stock.stockExchange) * parseFloat(data[stock.stockName][lookupDate]['5. adjusted close'])
+                    }
+                }
+
+                yVals[stock.stockName] = []
+                for (let date in calcs) {
+                    if (!xVals[date])
+                        xVals.push(date)
+                    yVals[stock.stockName].push(calcs[date])
+                }
+
+                if (currMetric === "Sortino Ratio") {
+                    let minReturn = prompt("Enter your min returns rate: ")
+                    let sumNeg = 0
+                    for (let yval in yVals[stock.stockName]) {
+                        let returnRate = (yval - yVals[stock.stockName][0]) / yVals[stock.stockName][0]
+                        if (returnRate < minReturn)
+                            sumNeg += (minReturn - returnRate) * (minReturn - returnRate)
+                    }
+                    let downsideVariance = sumNeg / 19
+                    let downsideDeviation = Math.sqrt(downsideVariance)
+                    let recentRate = (yVals[stock.stockName][18] - yVals[stock.stockName][0]) / yVals[stock.stockName][0]
+                    let sortinoRatio = (recentRate - minReturn) / (downsideDeviation)
+                    alert("The sortino ratio of the portfolio is " + sortinoRatio)
+                }
+                if (currMetric === "Sharpe Ratio") {
+                    let sum = 0
+                    let sumSquared = 0
+                    for (let yval in yVals[stock.stockName]) {
+                        let returnRate = (yval - yVals[stock.stockName][0]) / yVals[stock.stockName][0]
+                        sum += returnRate
+                        sumSquared += returnRate * returnRate
+                    }
+                    let meanReturn = sum / data.length
+                    let standardDeviation = Math.sqrt(sumSquared / 19)
+
+                    let sharpeRatio = meanReturn / standardDeviation;
+                    alert("The sharpe ratio of the portfolio is " + sharpeRatio);
+                }
+                if (currMetric === "Standard Deviation") {
+                    let sumSquared = 0
+                    for (let yval in yVals[stock.stockName]) {
+                        let returnRate = (yval - yVals[stock.stockName][0]) / yVals[stock.stockName][0]
+                        sumSquared += returnRate * returnRate
+                    }
+                    let standardDeviation = Math.sqrt(sumSquared / 19)
+                    alert("The standard deviation of the portfolio is " + standardDeviation)
+                }
+                if (currMetric === "R Squared") {
+
+                }
+
+                // Add the new dataset
+                metricChart.data.datasets.push({
+                    label: stock.stockName + ' ' + currMetric,
+                    data: yVals[stock.stockName],
+                    tension: 0.2,
+                    borderColor: getRandomColor()
+                })
+
+                // This is a patch for some wierd Chartjs mechanic that doubles the x-axis each time we add a new set
+                while (metricChart.data.labels.length > 19)
+                    metricChart.data.labels.pop()
+
+                metricChart.update()
+            }
+        })
     })
 }
 
-function getPrice(stockName, index) {
-    $.ajax({
-        url: '/stock_price',
-        type: 'POST',
-        datatype: 'json',
-        data: {
-            name: stockName
-        },
-        success: (res) => {
-            if (res.status === "success")
-                return [0, stockName, res.date, index]
-            else return [1, res.data, index]
-        }
-    })
-}
-
-function metricSelection(metric) {
-    currMetric = metric
-    $('#metricSelectionButton').html(currMetric)
-}
-
-function intervalSelection(interval) {
-    currTimePeriod = interval
-    $('#timeSelection').html(currTimePeriod)
-}
-
-function calculateMetric() {
-    let metric = $('#metricSelection').html()
-    let interval = $('#timeSelection').html()
-
-    if (metric === "Metric" || interval === "Time Period")
-        alert("Please select parameters!")
-    // else
-        // updateChart(metric, interval);
+function getRandomColor() {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++)
+        color += letters[Math.floor(Math.random() * 16)]
+    return color;
 }

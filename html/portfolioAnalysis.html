@@ -1,73 +1,65 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <meta charset="UTF-8">
 
 <head>
     <title>IPMS</title>
-
-    <link rel="stylesheet" href="../styles/styles.css">
     <link rel="icon" href="../styles/logo.svg" type="image/icon type">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-
-
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
 </head>
 
 <body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-<script type="module" src="../js/analysis.js"></script>
-<script type="module" src="../js/navigation.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../app.js"></script>
+<script src="../js/navigation.js"></script>
+<script src="../js/analysis.js"></script>
 
-<!-- navigation -->
 <div class="navigation">
 </div>
 
-<!-- page header -->
 <div class="header">
-    <h2>Portfolio Analysis</h2>
+    <h2>
+        Portfolio Analysis
+    </h2>
 </div>
-
-<div class="container" id="chartDiv">
+<div class="contentContainer" id="chartDiv">
     <canvas id="myChart"></canvas>
 </div>
-
 <div class="contentContainer">
     <div id="dataSelectionContent">
         <div id="parameterSelection" class="input-group input-group-lg">
             <div class="input-group-prepend">
-                <span class="input-group-text">Table</span>
+                <span class="input-group-text" id="inputGroup-sizing-lg">Table</span>
             </div>
-
             <div class="input-group-append">
-                <button class="btn btn-outline-light dropdown-toggle" id="metricSelectionButton" type="button" data-toggle="dropdown">
-                    Metric
-                </button>
+                <button id="metricSelection" class="btn btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown">Metric</button>
                 <div class="dropdown-menu" id="tableSelectionDiv">
                     <a class="dropdown-item" id="metricSelRet" href="#">Returns</a>
                     <a class="dropdown-item" id="metricSelTotalVal" href="#">Total Value</a>
                     <a class="dropdown-item" id="metricSelSortinoRat" href="#">Sortino Ratio</a>
                     <a class="dropdown-item" id="metricSelSharpeRat" href="#">Sharpe Ratio</a>
+                    <a class="dropdown-item" id="metricSelStdDev" href="#">Standard Deviation</a>
+                    <a class="dropdown-item" id="metricSelRSq" href="#">R Squared</a>
                 </div>
             </div>
-
             <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-lg">Duration</span>
+                <span class="input-group-text">Duration</span>
             </div>
             <div class="input-group-append">
-                <button id="timeSelection" class="btn btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown">
-                    Time Period
-                </button>
+                <button id="timeSelection" class="btn btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown">Time Period</button>
                 <div class="dropdown-menu">
-                    <a id="3months" class="dropdown-item" href="#">3 Months</a>
-                    <a id="6months" class="dropdown-item" href="#">6 Months</a>
-                    <a id="1year" class="dropdown-item" href="#">1 Year</a>
+                    <a class="dropdown-item" id="3months" href="#">3 Months</a>
+                    <a class="dropdown-item" id="6months" href="#">6 Months</a>
+                    <a class="dropdown-item" id="1year" href="#">1 Year</a>
                 </div>
             </div>
-            <button id="calculateMetricButton" style="border-radius:0" class="btn btn-outline-light" type="button">Calculate Metric</button>
+            <button id="calculateMetricButton" class="btn btn-outline-light" type="button">
+                Calculate Metric
+            </button>
         </div>
     </div>
 </div>
@@ -81,10 +73,10 @@
                 <th scope="col">Stock</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Buy Date</th>
+                <th scope="col">Remove</th>
             </tr>
             </thead>
-            <tbody id = "stockTable">
-            </tbody>
+            <tbody id="stockTable"></tbody>
         </table>
     </div>
 </div>

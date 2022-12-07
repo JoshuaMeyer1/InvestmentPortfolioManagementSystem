@@ -17,14 +17,17 @@ body {
     transition: 0.5s;
     overflow: hidden;
 }
+
 .navigation ul li{
     position: relative;
     width: 100%;
     list-style: none;
 }
+
 .navigation ul li:hover {
     background: #46a2b3;
 }
+
 .navigation ul li a {
     position: relative;
     width: 100%;
@@ -34,6 +37,7 @@ body {
     line-height: 60px;
     padding-left: 2rem;
 }
+
 .navigation ul li a .title {
     position: relative;
     display: block;
@@ -58,12 +62,18 @@ body {
     padding-top: 1rem;
     padding-bottom: 1rem;
     color: white;
+}html, body, .container {
+     height: 100%;
+ }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.contentContainer {
-    padding-left: 200px;
-    padding-top: 0.5rem;  
-}
+
 
 .contentContainer h3 {
     padding-left: 2rem;
@@ -82,11 +92,6 @@ body {
 #startStopButtons {
     padding-top: 8rem;
     border: none;
-}
-
-#serverStatusDSS {
-    background-color: #edb4b4;
-    border-left: 6px solid red;
 }
 
 #parameterSelection {
@@ -117,11 +122,15 @@ body {
 }
 
 .contentContainer {
+ }
+
+.contentContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 10rem;
+    padding-top: 0.5rem;
+    padding-left: 200px;
 }
 
 .fieldInput {
@@ -163,4 +172,12 @@ body {
 
 .show {
     display:block;
+}
+
+.btn-outline-secondary {
+    color: #a3a3a3;
+}
+
+canvas {
+    background:white;
 }
