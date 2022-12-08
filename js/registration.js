@@ -1,3 +1,5 @@
+const $ = require('jquery');
+
 $(document).ready(() => {
 
     // When the username input is edited, update the password validation box.

@@ -11,7 +11,7 @@ const request = require('request')
 
 app.use(bodyParser.json())
 app.use(express.static('public'))
-app.use(bodyParser.urlencoded({ extended:true }))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json({ limit: '1mb' }))
 
 app.use(express.static(path.join(__dirname, '/')))
@@ -74,21 +74,14 @@ app.post("/initialize_stocks", (req, res) => {
 app.post("/submit_stock", (req, res) => {
     let filter = { username: req.body.username }
     let update = { $push: { portfolio: req.body.stock } }
-
-    console.log(req.body.stock)
     userModel.updateOne(filter, update, null, () => {})
-
     return res.json({ status: 'Stock submitted' })
 })
 
 app.post("/remove_stock", (req, res) => {
-    console.log(req.body.username)
-
     let filter = { username: req.body.username }
     let update = { $pull: { portfolio: req.body.stock } }
-
     userModel.updateOne(filter, update, null, () => {})
-
     return res.json({ status: 'Stock removed' })
 })
 
@@ -103,7 +96,21 @@ app.post("/stock_price", (req, res) => {
         json: true,
         headers: { 'User-Agent': 'request' }
     }, (err, result, data) => {
-        // console.log('hi', data)
         return res.json(data['Time Series (Daily)'])
     })
 })
+
+app.post("/delete_user", (req, res) => {
+    let filter = { username: req.body.username }
+    userModel.deleteOne(filter)
+    return res.json({ status: 'User deleted' })
+})
+
+app.post("/delete_all", (req, res) => {
+    userModel.deleteMany({})
+    console.log('hello')
+    userModel.findOne({}, (err, data) => console.log(data))
+    return res.json({ status: 'All users deleted' })
+})
+
+module.exports = app
